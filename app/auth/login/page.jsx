@@ -4,8 +4,19 @@ import React from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { fetchLoginUserThunkAction } from "@/redux/auth/action";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const dispatch = useDispatch();
+
+  const router = useRouter();
+
+  const onSuccess = () => {
+    router.push("/");
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -13,14 +24,14 @@ const page = () => {
     },
     validationSchema: Yup.object().shape({
       email: Yup.string().trim().email("Invalid email address").required("Email is required."),
-      password: Yup.string().trim().required("Password is required.")
-      // .matches(
-      //   /^(?=.*\d)(?=.*[!@#$%.^&*])(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
-      //   "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-      // )
+      password: Yup.string()
+        .trim()
+        .required("Password is required.")
+        .min(6, "Password must be at least 6 characters.")
     }),
     onSubmit: (values) => {
       console.log(values);
+      dispatch(fetchLoginUserThunkAction(values, onSuccess));
     }
   });
 

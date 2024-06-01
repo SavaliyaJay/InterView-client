@@ -1,11 +1,11 @@
 import {
-  SET_LOGGED_IN_USER,
-  SET_LOGGED_OUT_USER,
   REFRESH_STATE,
-  SET_IS_SIGNUP,
-  RESET_IS_SIGNUP,
-  SET_IS_SUBMITING,
-  RESET_IS_SUBMITING
+  RESET_IS_SIGNING,
+  SET_IS_SIGNING,
+  SET_LOGGEDIN_USER,
+  SET_LOGGEDOUT_USER,
+  SET_FORGET_PASSWORD_USER_EMAIL,
+  RESET_FORGET_PASSWORD_USER_EMAIL
 } from "./types";
 
 const initialState = {
@@ -13,63 +13,59 @@ const initialState = {
   token: null,
   role: "",
   isLoading: false,
-  error: "",
   isSigning: false,
-  isSubmiting: false,
-  isVerified: false
+  error: "",
+  isVerify: false,
+  userprofileDetail: null
 };
 
-const authReducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_LOGGED_IN_USER:
+    case SET_LOGGEDIN_USER:
       return {
         ...state,
-        loggedInUser: action.payload.user,
         token: action.payload.token,
+        loggedInUser: action.payload.user,
         role: action.payload.role,
-        isVerified: action.payload.isVerified,
-        isLoading: false,
-        error: ""
+        error: "",
+        isSigning: false
       };
-    case SET_LOGGED_OUT_USER:
+    case SET_LOGGEDOUT_USER:
       return {
         ...state,
-        loggedInUser: null,
-        token: null,
-        role: "",
-        isVerified: false,
-        isLoading: false,
-        error: ""
+        ...initialState
       };
-    case REFRESH_STATE:
-      return {
-        ...state,
-        isLoading: false,
-        error: ""
-      };
-    case SET_IS_SIGNUP:
+
+    case SET_IS_SIGNING:
       return {
         ...state,
         isSigning: true
       };
-    case RESET_IS_SIGNUP:
+    case RESET_IS_SIGNING:
       return {
         ...state,
         isSigning: false
       };
-    case SET_IS_SUBMITING:
+    case SET_FORGET_PASSWORD_USER_EMAIL:
       return {
         ...state,
-        isSubmiting: true
+        isVerify: true
       };
-    case RESET_IS_SUBMITING:
+    case RESET_FORGET_PASSWORD_USER_EMAIL:
       return {
         ...state,
-        isSubmiting: false
+        isVerify: false
+      };
+    case REFRESH_STATE:
+      return {
+        ...state,
+        token: action.payload.token,
+        role: action.payload.role,
+        loggedInUser: action.payload.user
       };
     default:
       return state;
   }
 };
 
-export default authReducer;
+export default reducer;

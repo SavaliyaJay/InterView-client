@@ -4,8 +4,20 @@ import React from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "@/redux/auth/selectors";
+import { registerUserThunkAction } from "@/redux/auth/action";
+import { useRouter } from "next/navigation";
 const page = () => {
+  const dispatch = useDispatch();
+
+  const { isSigning } = useSelector(selectUser);
+
+  const router = useRouter();
+
+  const onSuccess = () => {
+    router.push("/auth/login");
+  };
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -16,8 +28,12 @@ const page = () => {
     validationSchema: Yup.object().shape({
       username: Yup.string().trim().required("Username is required."),
       email: Yup.string().trim().email("Invalid email address").required("Email is required."),
-      password: Yup.string().trim().required("Password is required."),
+      password: Yup.string()
+        .trim()
+        .required("Password is required.")
+        .min(6, "Password must be at least 6 characters."),
       confirmPassword: Yup.string()
+        .min(6, "Password must be at least 6 characters.")
         .trim()
         .oneOf([Yup.ref("password"), null], "Passwords must match.")
         .required("Confirm Password is required.")
@@ -25,6 +41,7 @@ const page = () => {
 
     onSubmit: (values) => {
       console.log(values);
+      dispatch(registerUserThunkAction(values, onSuccess));
     }
   });
   return (
@@ -63,7 +80,6 @@ const page = () => {
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Your Email
                 </Typography>
-
                 <div>
                   <Input
                     size="lg"
@@ -116,13 +132,13 @@ const page = () => {
                 </div>
               </div>
               <div className="flex justify-center items-center">
-                <Button className="mt-6 flex" color="blue" type="submit">
+                <Button className="mt-6 flex" color="blue" type="submit" disabled={isSigning}>
                   Sign up
                 </Button>
               </div>
               <Typography color="gray" className="mt-4 text-center font-normal">
                 Already have an account?{" "}
-                <Link href="/auth/login" className="font-medium text-gray-900">
+                <Link href="/auth/login" className="font-medium text-blue-700 underline">
                   Sign In
                 </Link>
               </Typography>
