@@ -30,20 +30,20 @@ instance.interceptors.response.use(
       // console.log('canceled');
     } else if (!error.response) {
       toast.error("Network error");
-      // localStorage.removeItem("token");
-      // localStorage.removeItem("role");
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
       // localStorage.removeItem("user");
     }
     if (error?.response?.status === 401) {
-      // localStorage.removeItem("token");
-      // localStorage.removeItem("role");
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
       // localStorage.removeItem("user");
       // localStorage.removeItem("isVerified");
       // localStorage.removeItem("isOnboardCount");
 
       window.location.reload();
     } else {
-      // toast.error(error.response.data.message);
+      toast.error(error.response.data.message);
     }
 
     return Promise.reject(error);

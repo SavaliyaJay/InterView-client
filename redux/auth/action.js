@@ -92,14 +92,14 @@ export const fetchLoginUserThunkAction = ({ email, password }, onSuccess) => {
 
       console.log(data.accesssToken);
 
-      localStorage.setItem("token", data.accesssToken);
-      // localStorage.setItem("role", data.user.role_id);
+      localStorage.setItem("token", data.data.accesssToken);
+      localStorage.setItem("role", data.data.role);
       // localStorage.setItem("user", JSON.stringify(data.user));
       dispatch(
         setLoggedInUser({
           // user: data.user,
-          token: data.accesssToken
-          // role: data.user.role_id
+          token: data.accesssToken,
+          role: data.data.role
         })
       );
       onSuccess();

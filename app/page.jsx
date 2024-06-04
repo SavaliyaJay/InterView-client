@@ -13,6 +13,12 @@ export default function Home() {
         <Link href="auth/register">
           <Button color="blue">Register</Button>
         </Link>
+        <Link href="user">
+          <Button color="blue">User</Button>
+        </Link>
+        <Link href="myDashboard">
+          <Button color="blue">My Dashboard</Button>
+        </Link>
       </div>
     </>
   );
