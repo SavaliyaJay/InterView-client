@@ -40,3 +40,7 @@ yarn.lock
 yarn-error.log
 
 .next
+
+package-lock.json
+
+yarn.Lock
