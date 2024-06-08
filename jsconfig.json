@@ -2,7 +2,8 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./*"],
-      "app/*": ["./app/*"] // Add this line to include the 'app' directory
+      "app/*": ["./app/*"], // Add this line to include the 'app' directory
+      "redux/userCategoryList/*": ["./redux/userCategoryList/*"] // Add this line to include the 'redux/userCategoryList' directory
     }
   }
 }
