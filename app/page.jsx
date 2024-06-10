@@ -16,7 +16,7 @@ export default function Home() {
         <Link href="user">
           <Button color="blue">User</Button>
         </Link>
-        <Link href="myDashboard">
+        <Link href="/user/myDashboard">
           <Button color="blue">My Dashboard</Button>
         </Link>
       </div>
