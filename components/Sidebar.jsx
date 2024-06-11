@@ -10,7 +10,7 @@ const Sidebar = ({ categories, isSidebarOpen, toggleSidebar }) => {
   const [openMenus, setOpenMenus] = useState({});
   const dispatch = useDispatch();
   const subCategories = useSelector(selectSubCategoryList);
-  const { setContent } = useContext(SidebarContext);
+  const { setSubCategoryData } = useContext(SidebarContext);
 
   const toggleSubMenu = (menu, categoryId) => {
     setOpenMenus((prevOpenMenus) => {
@@ -66,7 +66,11 @@ const Sidebar = ({ categories, isSidebarOpen, toggleSidebar }) => {
                 <h1
                   key={subCat.sc_id}
                   onClick={() =>
-                    setContent(`Category ID: ${subCat.c_id}, Subcategory ID: ${subCat.sc_id}`)
+                    setSubCategoryData({
+                      subCategoryId: subCat.sc_id,
+                      categoryName: cat.name,
+                      subCategoryName: subCat.name
+                    })
                   }
                   className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1"
                 >

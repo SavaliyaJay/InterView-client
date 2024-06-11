@@ -1,13 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-const QuestionCard = ({ content }) => {
-  useEffect(() => {
-    console.log("QuestionCard: ", content);
-  }, [content]);
+const QuestionCard = ({ questions }) => {
   return (
-    <>
-      <div className="bg-[#fff] p-1 rounded-md">QuestionCard: {content} </div>
-    </>
+    <div className="bg-[#fff] p-1 rounded-md">
+      {questions ? questions[0]?.question : "No question available"}
+    </div>
   );
 };
 
