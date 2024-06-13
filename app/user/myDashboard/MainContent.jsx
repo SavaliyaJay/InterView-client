@@ -39,12 +39,9 @@ const MainContent = ({ subCategoryData }) => {
       setCurrentPage(currentPage - 1);
     }
   };
+
   return (
     <>
-      {/* <div className="flex justify-between">
-        <Button color="blue">{"< Previous"}</Button>
-        <Button color="blue">{"Next >"}</Button>
-      </div> */}
       <div>
         <Breadcrumbs>
           <Link href="/">
@@ -61,7 +58,7 @@ const MainContent = ({ subCategoryData }) => {
             Completed
           </Typography>
           <Typography color="blue-gray" variant="h6">
-            {currentPage} of {totalPage}
+            {currentPage} of {totalPage ? totalPage : 1}
           </Typography>
         </div>
         <Progress color="blue-gray" value={(currentPage / totalPage) * 100} />
@@ -71,7 +68,7 @@ const MainContent = ({ subCategoryData }) => {
         <div className="flex-grow bg-[#f1f1f1] rounded-md p-4">
           <div className="flex flex-col gap-2">
             <QuestionCard questions={questions?.questions} />
-            <AnswerCard />
+            <AnswerCard answer={questions?.questions} keyProp={currentPage} />
             <SuggestionCard />
           </div>
         </div>

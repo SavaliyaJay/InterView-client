@@ -62,7 +62,7 @@ export const fetchQuestionListThunkAction = ({ subCategoryId, param }, onSuccess
       onSuccess();
     } catch (error) {
       dispatch(fetchQuestionListFailure(error));
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
 };
