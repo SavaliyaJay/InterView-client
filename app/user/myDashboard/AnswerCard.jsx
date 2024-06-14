@@ -3,12 +3,16 @@ import React, { useState, useEffect, useRef } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "regenerator-runtime/runtime";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { postAnswerThunkAction } from "@/redux/content/action";
 
-const AnswerCard = ({ answer, keyProp }) => {
+const AnswerCard = ({ questions, keyProp }) => {
+  const dispatch = useDispatch();
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
-  const [story, setStory] = useState("");
+  const [answer, setAnswer] = useState("");
   const processedLengthRef = useRef(0);
 
   const startListening = () => {
@@ -25,7 +29,7 @@ const AnswerCard = ({ answer, keyProp }) => {
   useEffect(() => {
     if (transcript.length > processedLengthRef.current) {
       const newTranscript = transcript.slice(processedLengthRef.current);
-      setStory((prevStory) => `${prevStory}${newTranscript}`.trim());
+      setAnswer((prevStory) => `${prevStory}${newTranscript}`.trim());
       processedLengthRef.current = transcript.length;
 
       const timeoutId = setTimeout(() => {
@@ -37,14 +41,23 @@ const AnswerCard = ({ answer, keyProp }) => {
   }, [transcript]);
 
   const handleManualChange = (event) => {
-    setStory(event.target.value);
+    setAnswer(event.target.value);
   };
 
   useEffect(() => {
-    setStory("");
+    setAnswer("");
     processedLengthRef.current = 0;
     resetTranscript();
   }, [keyProp, resetTranscript]);
+
+  const handleSubmit = () => {
+    if (answer.trim() === "") {
+      toast.error("Please write your answer before submitting.");
+      return;
+    }
+    const question_id = questions ? questions[0]?.q_id : null;
+    dispatch(postAnswerThunkAction({ answer, question_id }));
+  };
 
   if (!browserSupportsSpeechRecognition) {
     return (
@@ -55,11 +68,13 @@ const AnswerCard = ({ answer, keyProp }) => {
             <Textarea
               color="blue-gray"
               label="Message"
-              value={story}
+              value={answer}
               onChange={handleManualChange}
             />
             <div className="flex justify-end items-center mt-3">
-              <Button color="blue">Submit</Button>
+              <Button color="blue" onClick={handleSubmit}>
+                Submit
+              </Button>
             </div>
           </div>
         </div>
@@ -71,7 +86,7 @@ const AnswerCard = ({ answer, keyProp }) => {
     <div className="bg-white p-3 rounded-md">
       <b>Write your answer here:</b>
       <div className="mt-2">
-        <Textarea color="blue-gray" label="Message" value={story} onChange={handleManualChange} />
+        <Textarea color="blue-gray" label="Message" value={answer} onChange={handleManualChange} />
         <div className="flex justify-between items-center mt-3">
           <Button
             id="listen-button"
@@ -81,7 +96,9 @@ const AnswerCard = ({ answer, keyProp }) => {
           >
             {isListening ? <i className="bi bi-mic-mute"></i> : <i className="bi bi-mic"></i>}
           </Button>
-          <Button color="blue">Submit</Button>
+          <Button color="blue" onClick={handleSubmit}>
+            Submit
+          </Button>
         </div>
       </div>
     </div>

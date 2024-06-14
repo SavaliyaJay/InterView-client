@@ -68,7 +68,7 @@ const MainContent = ({ subCategoryData }) => {
         <div className="flex-grow bg-[#f1f1f1] rounded-md p-4">
           <div className="flex flex-col gap-2">
             <QuestionCard questions={questions?.questions} />
-            <AnswerCard answer={questions?.questions} keyProp={currentPage} />
+            <AnswerCard questions={questions?.questions} keyProp={currentPage} />
             <SuggestionCard />
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { fetchUserContentListApi } from "@/services/userContent";
+import { fetchUserContentListApi, postAnswerApi } from "@/services/userContent";
 import {
   FETCH_QUESTION_LIST_REQUEST,
   FETCH_QUESTION_LIST_SUCCESS,
@@ -62,6 +62,42 @@ export const fetchQuestionListThunkAction = ({ subCategoryId, param }, onSuccess
       onSuccess();
     } catch (error) {
       dispatch(fetchQuestionListFailure(error));
+      toast.error(error.response.data.message);
+    }
+  };
+};
+
+export const postAnswerThunkAction = (answer, onSuccess = () => {}) => {
+  return async (dispatch) => {
+    try {
+      const promise = await postAnswerApi(answer);
+
+      if (promise.data.status === "error") {
+        toast.error(promise.data.message);
+        return;
+      }
+
+      toast.success(promise.data.message);
+
+      onSuccess();
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+};
+
+export const fetchAnswerOfQuestionThunkAction = ({ questionId }, onSuccess = () => {}) => {
+  return async (dispatch) => {
+    try {
+      dispatch(fetchAnswerListRequest());
+
+      const promise = await fetchAnswerOfQuestionApi({ questionId });
+
+      dispatch(fetchAnswerListSuccess(promise.data));
+
+      onSuccess();
+    } catch (error) {
+      dispatch(fetchAnswerListFailure(error));
       toast.error(error.response.data.message);
     }
   };
