@@ -1,4 +1,9 @@
-import { fetchUserContentListApi, postAnswerApi } from "@/services/userContent";
+import {
+  fetchAnswerOfQuestionApi,
+  fetchUserContentListApi,
+  postAnswerApi,
+  putAnswerOfQuestionApi
+} from "@/services/userContent";
 import {
   FETCH_QUESTION_LIST_REQUEST,
   FETCH_QUESTION_LIST_SUCCESS,
@@ -86,18 +91,40 @@ export const postAnswerThunkAction = (answer, onSuccess = () => {}) => {
   };
 };
 
-export const fetchAnswerOfQuestionThunkAction = ({ questionId }, onSuccess = () => {}) => {
+export const fetchAnswerOfQuestionThunkAction = (questionId, onSuccess = () => {}) => {
   return async (dispatch) => {
     try {
       dispatch(fetchAnswerListRequest());
 
-      const promise = await fetchAnswerOfQuestionApi({ questionId });
+      const response = await fetchAnswerOfQuestionApi(questionId);
 
-      dispatch(fetchAnswerListSuccess(promise.data));
+      console.log(response.data);
+      dispatch(fetchAnswerListSuccess(response.data));
 
       onSuccess();
     } catch (error) {
+      console.log(error);
       dispatch(fetchAnswerListFailure(error));
+      toast.error(error.response?.data?.message);
+    }
+  };
+};
+
+export const putAnswerOfQuestionThunkAction = (data, onSuccess = () => {}) => {
+  return async (dispatch) => {
+    try {
+      console.log(data);
+      const promise = await putAnswerOfQuestionApi(data);
+
+      if (promise.data.status === "error") {
+        toast.error(promise.data.message);
+        return;
+      }
+
+      toast.success(promise.data.message);
+
+      onSuccess();
+    } catch (error) {
       toast.error(error.response.data.message);
     }
   };

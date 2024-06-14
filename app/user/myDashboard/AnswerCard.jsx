@@ -4,8 +4,13 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "regenerator-runtime/runtime";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { postAnswerThunkAction } from "@/redux/content/action";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchAnswerOfQuestionThunkAction,
+  postAnswerThunkAction,
+  putAnswerOfQuestionThunkAction
+} from "@/redux/content/action";
+import { selectContentList } from "@/redux/content/selectors";
 
 const AnswerCard = ({ questions, keyProp }) => {
   const dispatch = useDispatch();
@@ -14,6 +19,15 @@ const AnswerCard = ({ questions, keyProp }) => {
   const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
   const [answer, setAnswer] = useState("");
   const processedLengthRef = useRef(0);
+  const { answers } = useSelector(selectContentList);
+  const [updateAnswer, setUpdateAnswer] = useState(false);
+
+  useEffect(() => {
+    const questionId = questions ? questions[0]?.q_id : null;
+    if (questionId) {
+      dispatch(fetchAnswerOfQuestionThunkAction(questionId));
+    }
+  }, [questions, dispatch]);
 
   const startListening = () => {
     setIsListening(true);
@@ -50,57 +64,94 @@ const AnswerCard = ({ questions, keyProp }) => {
     resetTranscript();
   }, [keyProp, resetTranscript]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (answer.trim() === "") {
       toast.error("Please write your answer before submitting.");
       return;
     }
+
     const question_id = questions ? questions[0]?.q_id : null;
-    dispatch(postAnswerThunkAction({ answer, question_id }));
+    if (!question_id) {
+      toast.error("No question found to post answer");
+      return;
+    }
+
+    if (updateAnswer) {
+      await dispatch(
+        putAnswerOfQuestionThunkAction({ answer, question_id, answer_id: answers.answers[0].a_id })
+      );
+      setUpdateAnswer(false);
+    } else {
+      await dispatch(postAnswerThunkAction({ answer, question_id }));
+    }
+    dispatch(fetchAnswerOfQuestionThunkAction(question_id));
   };
 
-  if (!browserSupportsSpeechRecognition) {
-    return (
-      <>
-        <div className="bg-white p-3 rounded-md">
-          <b>Write your answer here:</b>
-          <div className="mt-2">
-            <Textarea
-              color="blue-gray"
-              label="Message"
-              value={answer}
-              onChange={handleManualChange}
-            />
-            <div className="flex justify-end items-center mt-3">
-              <Button color="blue" onClick={handleSubmit}>
-                Submit
-              </Button>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
+  const handleUpdateSubmit = () => {
+    setAnswer(answers.answers[0].answer);
+    setUpdateAnswer(true);
+  };
 
   return (
     <div className="bg-white p-3 rounded-md">
       <b>Write your answer here:</b>
-      <div className="mt-2">
-        <Textarea color="blue-gray" label="Message" value={answer} onChange={handleManualChange} />
-        <div className="flex justify-between items-center mt-3">
-          <Button
-            id="listen-button"
-            color="blue"
-            className={`rounded-full p-3 transition-transform duration-300 ${isSpeaking ? "transform scale-125" : "transform scale-100"}`}
-            onClick={isListening ? stopListening : startListening}
-          >
-            {isListening ? <i className="bi bi-mic-mute"></i> : <i className="bi bi-mic"></i>}
-          </Button>
-          <Button color="blue" onClick={handleSubmit}>
-            Submit
-          </Button>
+      {answers && (
+        <div className="bg-[#f1f1f1] p-3 rounded-md mt-2">
+          <b>Your answer:</b>
+          <p>
+            {!updateAnswer && answers && answers.answers && answers.answers.length > 0 ? (
+              <>
+                <div className="mt-2">
+                  <span>{answers.answers[0].answer}</span>
+                  <div className="flex justify-end items-center mt-3">
+                    <Button color="blue" onClick={handleUpdateSubmit}>
+                      Update Answer
+                    </Button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="mt-2">
+                <Textarea
+                  color="blue-gray"
+                  label="Message"
+                  value={answer}
+                  onChange={handleManualChange}
+                />
+                {!browserSupportsSpeechRecognition ? (
+                  <>
+                    <div className="flex justify-end items-center mt-3">
+                      <Button color="blue" onClick={handleSubmit}>
+                        Submit
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex justify-between items-center mt-3">
+                      <Button
+                        id="listen-button"
+                        color="blue"
+                        className={`rounded-full p-3 transition-transform duration-300 ${isSpeaking ? "transform scale-125" : "transform scale-100"}`}
+                        onClick={isListening ? stopListening : startListening}
+                      >
+                        {isListening ? (
+                          <i className="bi bi-mic-mute"></i>
+                        ) : (
+                          <i className="bi bi-mic"></i>
+                        )}
+                      </Button>
+                      <Button color="blue" onClick={handleSubmit}>
+                        Submit
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </p>
         </div>
-      </div>
+      )}
     </div>
   );
 };

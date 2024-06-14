@@ -8,8 +8,8 @@ import {
 } from "./types";
 
 const initialState = {
-  questions: [],
   answers: [],
+  questions: [],
   loading: false,
   error: ""
 };
@@ -23,12 +23,14 @@ const reducer = (state = initialState, action) => {
       };
     case FETCH_QUESTION_LIST_SUCCESS:
       return {
+        ...state,
         loading: false,
         questions: action.payload,
         error: ""
       };
     case FETCH_QUESTION_LIST_FAILURE:
       return {
+        ...state,
         loading: false,
         questions: [],
         error: action.payload
@@ -40,12 +42,14 @@ const reducer = (state = initialState, action) => {
       };
     case FETCH_ANSWER_LIST_SUCCESS:
       return {
+        ...state,
         loading: false,
         answers: action.payload,
         error: ""
       };
     case FETCH_ANSWER_LIST_FAILURE:
       return {
+        ...state,
         loading: false,
         answers: [],
         error: action.payload

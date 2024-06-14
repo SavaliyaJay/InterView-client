@@ -7,5 +7,10 @@ export const fetchUserContentListApi = ({ subCategoryId, param }) =>
 
 export const postAnswerApi = (data) => axiosInstance.post("/v1/answer/", data);
 
-export const fetchAnswerOfQuestionApi = (question_id) =>
-  axiosInstance.get(`/v1/answer/question/${question_id}`);
+export const fetchAnswerOfQuestionApi = (question_id) => {
+  console.log(`/v1/answer/question/${question_id}`);
+  return axiosInstance.get(`/v1/answer/question/${question_id}`);
+};
+
+export const putAnswerOfQuestionApi = (data) =>
+  axiosInstance.put(`/v1/answer/${data.answer_id}`, data);
