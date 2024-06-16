@@ -68,12 +68,18 @@ const MainContent = ({ subCategoryData }) => {
         <div className="flex-grow bg-[#f1f1f1] rounded-md p-4">
           <div className="flex flex-col gap-2">
             <QuestionCard questions={questions?.questions} />
-            <AnswerCard questions={questions?.questions} keyProp={currentPage} />
-            <SuggestionCard />
+            <div className="bg-[#fff] rounded-md">
+              <AnswerCard questions={questions?.questions} keyProp={currentPage} />
+              <div className="flex items-center justify-center w-full ">
+                <Button variant="filled" color="blue">
+                  Give Suggestion
+                </Button>
+              </div>
+              <SuggestionCard />
+            </div>
           </div>
         </div>
       </div>
-
       <div className="flex justify-between pb-2">
         <Button onClick={prevBtn} disabled={currentPage <= 1} color="blue">
           {"< Previous"}

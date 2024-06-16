@@ -93,7 +93,7 @@ const AnswerCard = ({ questions, keyProp }) => {
   };
 
   return (
-    <div className="bg-white p-3 rounded-md">
+    <div className="p-3 rounded-md">
       <b>Write your answer here:</b>
       {answers && (
         <div className="bg-[#f1f1f1] p-3 rounded-md mt-2">
