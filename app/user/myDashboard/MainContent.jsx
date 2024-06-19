@@ -70,13 +70,8 @@ const MainContent = ({ subCategoryData }) => {
             <QuestionCard questions={questions?.questions} />
             <div className="bg-[#fff] rounded-md">
               <AnswerCard questions={questions?.questions} keyProp={currentPage} />
-              <div className="flex items-center justify-center w-full ">
-                <Button variant="filled" color="blue">
-                  Give Suggestion
-                </Button>
-              </div>
-              <SuggestionCard />
             </div>
+            <SuggestionCard questions={questions?.questions} />
           </div>
         </div>
       </div>

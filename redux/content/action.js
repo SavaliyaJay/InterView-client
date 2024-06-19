@@ -1,5 +1,6 @@
 import {
   fetchAnswerOfQuestionApi,
+  fetchSuggestionApi,
   fetchUserContentListApi,
   postAnswerApi,
   putAnswerOfQuestionApi
@@ -10,7 +11,10 @@ import {
   FETCH_QUESTION_LIST_FAILURE,
   FETCH_ANSWER_LIST_REQUEST,
   FETCH_ANSWER_LIST_SUCCESS,
-  FETCH_ANSWER_LIST_FAILURE
+  FETCH_ANSWER_LIST_FAILURE,
+  FETCH_SUGGESTION_FAILURE,
+  FETCH_SUGGESTION_REQUEST,
+  FETCH_SUGGESTION_SUCCESS
 } from "./types";
 
 import { toast } from "react-hot-toast";
@@ -51,6 +55,26 @@ export const fetchAnswerListSuccess = (answers) => {
 export const fetchAnswerListFailure = (error) => {
   return {
     type: FETCH_ANSWER_LIST_FAILURE,
+    payload: error
+  };
+};
+
+export const fetchSuggestionRequest = () => {
+  return {
+    type: FETCH_SUGGESTION_REQUEST
+  };
+};
+
+export const fetchSuggestionSuccess = (suggestion) => {
+  return {
+    type: FETCH_SUGGESTION_SUCCESS,
+    payload: suggestion
+  };
+};
+
+export const fetchSuggestionFailure = (error) => {
+  return {
+    type: FETCH_SUGGESTION_FAILURE,
     payload: error
   };
 };
@@ -125,6 +149,23 @@ export const putAnswerOfQuestionThunkAction = (data, onSuccess = () => {}) => {
 
       onSuccess();
     } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+};
+
+export const fetchSuggestionThunkAction = (onSuccess = () => {}) => {
+  return async (dispatch) => {
+    try {
+      dispatch(fetchSuggestionRequest());
+
+      const promise = await fetchSuggestionApi({ param: "suggestion" });
+
+      dispatch(fetchSuggestionSuccess(promise.data));
+
+      onSuccess();
+    } catch (error) {
+      dispatch(fetchSuggestionFailure(error));
       toast.error(error.response.data.message);
     }
   };

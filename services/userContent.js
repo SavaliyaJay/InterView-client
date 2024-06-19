@@ -14,3 +14,5 @@ export const fetchAnswerOfQuestionApi = (question_id) => {
 
 export const putAnswerOfQuestionApi = (data) =>
   axiosInstance.put(`/v1/answer/${data.answer_id}`, data);
+
+export const fetchSuggestionApi = () => axiosInstance.get("/v1/suggestion");
