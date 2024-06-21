@@ -23,9 +23,8 @@ const AnswerCard = ({ questions, keyProp }) => {
   const [updateAnswer, setUpdateAnswer] = useState(false);
 
   useEffect(() => {
-    const questionId = questions ? questions[0]?.q_id : null;
-    if (questionId) {
-      dispatch(fetchAnswerOfQuestionThunkAction(questionId));
+    if (questions?.q_id) {
+      dispatch(fetchAnswerOfQuestionThunkAction(questions?.q_id));
     }
   }, [questions, dispatch]);
 
@@ -70,7 +69,7 @@ const AnswerCard = ({ questions, keyProp }) => {
       return;
     }
 
-    const question_id = questions ? questions[0]?.q_id : null;
+    const question_id = questions?.q_id;
     if (!question_id) {
       toast.error("No question found to post answer");
       return;
@@ -78,7 +77,7 @@ const AnswerCard = ({ questions, keyProp }) => {
 
     if (updateAnswer) {
       await dispatch(
-        putAnswerOfQuestionThunkAction({ answer, question_id, answer_id: answers.answers[0].a_id })
+        putAnswerOfQuestionThunkAction({ answer, question_id, answer_id: answers.answers.a_id })
       );
       setUpdateAnswer(false);
     } else {
@@ -88,7 +87,7 @@ const AnswerCard = ({ questions, keyProp }) => {
   };
 
   const handleUpdateSubmit = () => {
-    setAnswer(answers.answers[0].answer);
+    setAnswer(answers.answers.answer);
     setUpdateAnswer(true);
   };
 
@@ -99,10 +98,10 @@ const AnswerCard = ({ questions, keyProp }) => {
         <div className="bg-[#f1f1f1] p-3 rounded-md mt-2">
           <b>Your answer:</b>
           <p>
-            {!updateAnswer && answers && answers.answers && answers.answers.length > 0 ? (
+            {!updateAnswer && answers && answers.answers ? (
               <>
                 <div className="mt-2">
-                  <span>{answers.answers[0].answer}</span>
+                  <span>{answers.answers.answer}</span>
                   <div className="flex justify-end items-center mt-3">
                     <Button color="blue" onClick={handleUpdateSubmit}>
                       Update Answer

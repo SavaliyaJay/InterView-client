@@ -11,8 +11,8 @@ import {
 } from "./types";
 
 const initialState = {
-  answers: [],
-  questions: [],
+  answers: {},
+  questions: {},
   suggestion: "",
   loading: false,
   error: ""
@@ -36,7 +36,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        questions: [],
+        questions: {},
         error: action.payload
       };
     case FETCH_ANSWER_LIST_REQUEST:
@@ -55,7 +55,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        answers: [],
+        answers: {},
         error: action.payload
       };
     case FETCH_SUGGESTION_REQUEST:

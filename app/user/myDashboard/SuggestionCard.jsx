@@ -5,8 +5,7 @@ import { useSelector } from "react-redux";
 
 const SuggestionCard = () => {
   const { answers, questions } = useSelector(selectContentList);
-  console.log("answers", answers.answers[0].a_id, answers.answers[0].questionId);
-  // console.log("questions", questions);
+  console.log("answers", answers?.answers?.a_id, answers?.answers?.questionId);
   return (
     <>
       <div className="bg-[#fff] rounded-md p-3">
@@ -15,7 +14,7 @@ const SuggestionCard = () => {
             Give Suggestion
           </Button>
         </div>
-        {questions ? questions[0]?.question : "No question available"}
+        {questions ? questions?.question : "No question available"}
         <div className=" p-3 rounded-md mt-2">SuggestionCard</div>
       </div>
     </>
