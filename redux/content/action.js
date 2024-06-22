@@ -154,12 +154,12 @@ export const putAnswerOfQuestionThunkAction = (data, onSuccess = () => {}) => {
   };
 };
 
-export const fetchSuggestionThunkAction = (onSuccess = () => {}) => {
+export const fetchSuggestionThunkAction = (data, onSuccess = () => {}) => {
   return async (dispatch) => {
     try {
       dispatch(fetchSuggestionRequest());
 
-      const promise = await fetchSuggestionApi({ param: "suggestion" });
+      const promise = await fetchSuggestionApi(data);
 
       dispatch(fetchSuggestionSuccess(promise.data));
 
