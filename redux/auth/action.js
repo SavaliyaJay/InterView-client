@@ -90,15 +90,11 @@ export const fetchLoginUserThunkAction = ({ email, password }, onSuccess) => {
 
       toast.success("Logged in successfully.");
 
-      console.log(data.accesssToken);
-
-      localStorage.setItem("token", data.data.accesssToken);
+      localStorage.setItem("token", data.data.accessToken);
       localStorage.setItem("role", data.data.role);
-      // localStorage.setItem("user", JSON.stringify(data.user));
       dispatch(
         setLoggedInUser({
-          // user: data.user,
-          token: data.accesssToken,
+          token: data.accessToken,
           role: data.data.role
         })
       );

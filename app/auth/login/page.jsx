@@ -30,7 +30,6 @@ const page = () => {
         .min(6, "Password must be at least 6 characters.")
     }),
     onSubmit: (values) => {
-      console.log(values);
       dispatch(fetchLoginUserThunkAction(values, onSuccess));
     }
   });

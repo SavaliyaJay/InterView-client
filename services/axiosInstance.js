@@ -3,7 +3,8 @@ import toast from "react-hot-toast";
 
 // Axios Instance
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_SERVER_URL
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
+  withCredentials: true
 });
 
 // Request interceptor

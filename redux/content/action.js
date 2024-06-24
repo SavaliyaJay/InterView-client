@@ -122,12 +122,10 @@ export const fetchAnswerOfQuestionThunkAction = (questionId, onSuccess = () => {
 
       const response = await fetchAnswerOfQuestionApi(questionId);
 
-      console.log(response.data);
       dispatch(fetchAnswerListSuccess(response.data));
 
       onSuccess();
     } catch (error) {
-      console.log(error);
       dispatch(fetchAnswerListFailure(error));
       toast.error(error.response?.data?.message);
     }
@@ -137,7 +135,6 @@ export const fetchAnswerOfQuestionThunkAction = (questionId, onSuccess = () => {
 export const putAnswerOfQuestionThunkAction = (data, onSuccess = () => {}) => {
   return async (dispatch) => {
     try {
-      console.log(data);
       const promise = await putAnswerOfQuestionApi(data);
 
       if (promise.data.status === "error") {

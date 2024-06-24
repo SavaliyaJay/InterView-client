@@ -40,7 +40,6 @@ const page = () => {
     }),
 
     onSubmit: (values) => {
-      console.log(values);
       dispatch(registerUserThunkAction(values, onSuccess));
     }
   });
