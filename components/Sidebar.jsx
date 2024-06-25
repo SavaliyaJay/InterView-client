@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { fetchUserSubCategoryListThunkAction } from "@/redux/sidebarList/action";
 import { selectSubCategoryList } from "@/redux/sidebarList/selectors";
-import { SidebarContext } from "@/app/user/myDashboard/page";
+import { SidebarContext } from "@/app/user/page";
+import Link from "next/link";
 
 const Sidebar = ({ categories, isSidebarOpen, toggleSidebar }) => {
   const [openMenus, setOpenMenus] = useState({});
@@ -33,7 +34,14 @@ const Sidebar = ({ categories, isSidebarOpen, toggleSidebar }) => {
   return (
     <div className="p-2 w-full text-center bg-[#111827]">
       <div className="p-2.5 mt-3 flex items-center justify-between px-4 duration-300 cursor-pointer font-bold hover:text-[#78716c] text-white">
-        <span className="text-[15px] ml-4">InterView.AI</span>
+        <span className="text-[15px] ml-4">
+          <Link href="/" className="flex lg:ml-4 text-3xl">
+            Interview
+            <div className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-text text-transparent">
+              .AI
+            </div>
+          </Link>
+        </span>
         {isSidebarOpen && (
           <button onClick={toggleSidebar}>
             <i className="bi bi-x-lg text-xl"></i>
