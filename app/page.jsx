@@ -4,8 +4,14 @@ import { Typography } from "@material-tailwind/react";
 import Link from "next/link";
 
 export default function Home() {
-  const role = window.localStorage.getItem("role");
+  const [role, setRole] = useState(null);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userRole = window.localStorage.getItem("role");
+      setRole(userRole);
+    }
+  }, []);
   return (
     <>
       <Navbar />

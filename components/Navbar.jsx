@@ -8,7 +8,14 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const token = window.localStorage.getItem("token");
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userToken = window.localStorage.getItem("token");
+      setToken(userToken);
+    }
+  }, []);
 
   return (
     <div className="bg-blue-500 sticky top-0 z-50">
