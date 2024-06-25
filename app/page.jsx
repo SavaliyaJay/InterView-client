@@ -2,6 +2,7 @@
 import Navbar from "@/components/Navbar";
 import { Typography } from "@material-tailwind/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [role, setRole] = useState(null);
