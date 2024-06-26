@@ -76,10 +76,18 @@ const MainContent = ({ subCategoryData }) => {
         </div>
       </div>
       <div className="flex justify-between pb-2">
-        <Button onClick={prevBtn} disabled={currentPage <= 1} color="blue">
+        <Button
+          onClick={prevBtn}
+          disabled={currentPage <= 1}
+          className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
+        >
           {"< Previous"}
         </Button>
-        <Button onClick={nextBtn} disabled={currentPage >= totalPage} color="blue">
+        <Button
+          onClick={nextBtn}
+          disabled={currentPage >= totalPage}
+          className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
+        >
           {"Next >"}
         </Button>
       </div>

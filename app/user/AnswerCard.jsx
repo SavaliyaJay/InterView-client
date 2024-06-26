@@ -103,7 +103,10 @@ const AnswerCard = ({ questions, keyProp }) => {
                 <div className="mt-2">
                   <span>{answers.answers.answer}</span>
                   <div className="flex justify-end items-center mt-3">
-                    <Button color="blue" onClick={handleUpdateSubmit}>
+                    <Button
+                      className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
+                      onClick={handleUpdateSubmit}
+                    >
                       Update Answer
                     </Button>
                   </div>
@@ -120,7 +123,10 @@ const AnswerCard = ({ questions, keyProp }) => {
                 {!browserSupportsSpeechRecognition ? (
                   <>
                     <div className="flex justify-end items-center mt-3">
-                      <Button color="blue" onClick={handleSubmit}>
+                      <Button
+                        className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
+                        onClick={handleSubmit}
+                      >
                         Submit
                       </Button>
                     </div>
@@ -130,8 +136,7 @@ const AnswerCard = ({ questions, keyProp }) => {
                     <div className="flex justify-between items-center mt-3">
                       <Button
                         id="listen-button"
-                        color="blue"
-                        className={`rounded-full p-3 transition-transform duration-300 ${isSpeaking ? "transform scale-125" : "transform scale-100"}`}
+                        className={`bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold hover:from-blue-700 hover:to-purple-600 rounded-full p-3 transition-transform duration-300 ${isSpeaking ? "transform scale-125" : "transform scale-100"}`}
                         onClick={isListening ? stopListening : startListening}
                       >
                         {isListening ? (
@@ -140,7 +145,10 @@ const AnswerCard = ({ questions, keyProp }) => {
                           <i className="bi bi-mic"></i>
                         )}
                       </Button>
-                      <Button color="blue" onClick={handleSubmit}>
+                      <Button
+                        className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
+                        onClick={handleSubmit}
+                      >
                         Submit
                       </Button>
                     </div>

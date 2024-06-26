@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Link from "next/link";
+import { SidebarAdminContext } from "@/app/admin/page";
 
 const SidebarAdmin = ({ isSidebarOpen, toggleSidebar }) => {
   const [openMenu, setOpenMenu] = useState(null);
+  const { setSidebarData } = useContext(SidebarAdminContext);
 
   const toggleSubMenu = (menu) => {
     setOpenMenu((prevOpenMenu) => (prevOpenMenu === menu ? null : menu));
@@ -32,13 +34,13 @@ const SidebarAdmin = ({ isSidebarOpen, toggleSidebar }) => {
       <div>
         <div
           className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-          onClick={() => toggleSubMenu("category1")}
+          onClick={() => toggleSubMenu("category")}
         >
           <div className="flex justify-between w-full items-center">
-            <span className="text-[15px] ml-4 text-gray-200 font-bold">Category 1</span>
+            <span className="text-[15px] ml-4 text-gray-200 font-bold">Category</span>
             <span
               className={`text-sm ${
-                openMenu === "category1" ? "duration-300 rotate-0" : "duration-300 rotate-180"
+                openMenu === "category" ? "duration-300 rotate-0" : "duration-300 rotate-180"
               }`}
               id="arrow"
             >
@@ -46,18 +48,24 @@ const SidebarAdmin = ({ isSidebarOpen, toggleSidebar }) => {
             </span>
           </div>
         </div>
-        {openMenu === "category1" && (
+        {openMenu === "category" && (
           <div
             className="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold"
             id="submenu"
           >
-            <h1 className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
+            <h1
+              className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1"
+              onClick={() => setSidebarData({ type: "addCategory" })}
+            >
               <div className="flex gap-2">
                 <i className="bi bi-chevron-right" />
                 <div>Add Category</div>
               </div>
             </h1>
-            <h1 className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
+            <h1
+              className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1"
+              onClick={() => setSidebarData({ type: "viewCategory" })}
+            >
               <div className="flex gap-2">
                 <i className="bi bi-chevron-right" />
                 <div>View Category</div>
@@ -70,13 +78,13 @@ const SidebarAdmin = ({ isSidebarOpen, toggleSidebar }) => {
       <div>
         <div
           className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-          onClick={() => toggleSubMenu("category2")}
+          onClick={() => toggleSubMenu("subCategory")}
         >
           <div className="flex justify-between w-full items-center">
-            <span className="text-[15px] ml-4 text-gray-200 font-bold">Category 2</span>
+            <span className="text-[15px] ml-4 text-gray-200 font-bold">Sub Category</span>
             <span
               className={`text-sm ${
-                openMenu === "category2" ? "duration-300 rotate-0" : "duration-300 rotate-180"
+                openMenu === "subCategory" ? "duration-300 rotate-0" : "duration-300 rotate-180"
               }`}
               id="arrow"
             >
@@ -84,21 +92,71 @@ const SidebarAdmin = ({ isSidebarOpen, toggleSidebar }) => {
             </span>
           </div>
         </div>
-        {openMenu === "category2" && (
+        {openMenu === "subCategory" && (
           <div
             className="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold"
             id="submenu"
           >
-            <h1 className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
+            <h1
+              className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1"
+              onClick={() => setSidebarData({ type: "addSubCategory" })}
+            >
               <div className="flex gap-2">
                 <i className="bi bi-chevron-right" />
-                <div>Add Category</div>
+                <div>Add Sub Category</div>
               </div>
             </h1>
-            <h1 className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1">
+            <h1
+              className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1"
+              onClick={() => setSidebarData({ type: "viewSubCategory" })}
+            >
               <div className="flex gap-2">
                 <i className="bi bi-chevron-right" />
-                <div>View Category</div>
+                <div>View Sub Category</div>
+              </div>
+            </h1>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <div
+          className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+          onClick={() => toggleSubMenu("question")}
+        >
+          <div className="flex justify-between w-full items-center">
+            <span className="text-[15px] ml-4 text-gray-200 font-bold">Question</span>
+            <span
+              className={`text-sm ${
+                openMenu === "question" ? "duration-300 rotate-0" : "duration-300 rotate-180"
+              }`}
+              id="arrow"
+            >
+              <i className="bi bi-chevron-down" />
+            </span>
+          </div>
+        </div>
+        {openMenu === "question" && (
+          <div
+            className="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold"
+            id="submenu"
+          >
+            <h1
+              className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1"
+              onClick={() => setSidebarData({ type: "addQuestion" })}
+            >
+              <div className="flex gap-2">
+                <i className="bi bi-chevron-right" />
+                <div>Add Question</div>
+              </div>
+            </h1>
+            <h1
+              className="cursor-pointer p-2 hover:bg-blue-600 rounded-md mt-1"
+              onClick={() => setSidebarData({ type: "viewQuestion" })}
+            >
+              <div className="flex gap-2">
+                <i className="bi bi-chevron-right" />
+                <div>View Question</div>
               </div>
             </h1>
           </div>

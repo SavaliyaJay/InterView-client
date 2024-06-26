@@ -20,7 +20,12 @@ const SuggestionCard = () => {
   return (
     <div className="bg-[#fff] rounded-md p-3">
       <div className="flex items-center justify-center w-full">
-        <Button disabled={loading} variant="filled" color="blue" onClick={handleSuggestion}>
+        <Button
+          disabled={loading}
+          variant="filled"
+          className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
+          onClick={handleSuggestion}
+        >
           Give Suggestion
         </Button>
       </div>

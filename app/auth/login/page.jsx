@@ -94,7 +94,10 @@ const page = () => {
                   </div>
                 </div>
                 <div className="flex justify-center items-center">
-                  <Button className="mt-6 flex" color="blue" type="submit">
+                  <Button
+                    className="mt-6 flex bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
+                    type="submit"
+                  >
                     Sign In
                   </Button>
                 </div>
