@@ -3,8 +3,11 @@ import Link from "next/link";
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { addNewCategoryThunkAction } from "@/redux/sidebarList/action";
 
 const AddCategory = () => {
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       categoryName: ""
@@ -12,8 +15,13 @@ const AddCategory = () => {
     validationSchema: Yup.object().shape({
       categoryName: Yup.string().trim().required("Category Name is required.")
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      const data = { name: values.categoryName };
+      dispatch(
+        addNewCategoryThunkAction(data, () => {
+          resetForm();
+        })
+      );
     }
   });
   return (

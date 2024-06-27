@@ -1,4 +1,4 @@
-import { postRegisterUserApi, postLoggedInUserApi } from "@/services/UserAuthServices";
+import { postRegisterUserApi, postLoggedInUserApi } from "@/services/authServices";
 import {
   REFRESH_STATE,
   RESET_IS_SIGNING,

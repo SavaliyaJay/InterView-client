@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "@/components/Sidebar";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { selectCategoryList } from "@/redux/sidebarList/selectors";
-import { fetchUserCategoryListThunkAction } from "@/redux/sidebarList/action";
+import { fetchCategoryListThunkAction } from "@/redux/sidebarList/action";
 import MainContent from "./MainContent";
 
 export const SidebarContext = createContext();
@@ -16,7 +16,7 @@ const SidebarPage = () => {
   const [subCategoryData, setSubCategoryData] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchUserCategoryListThunkAction());
+    dispatch(fetchCategoryListThunkAction());
   }, [dispatch]);
 
   const toggleSidebar = () => {

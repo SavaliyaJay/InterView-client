@@ -1,7 +1,7 @@
 import {
   FETCH_CATEGORY_LIST_REQUEST,
-  FETCH_USER_CATEGORY_LIST_SUCCESS,
-  FETCH_USER_CATEGORY_LIST_FAILURE,
+  FETCH_CATEGORY_LIST_SUCCESS,
+  FETCH_CATEGORY_LIST_FAILURE,
   FETCH_SUBCATEGORY_LIST_REQUEST,
   FETCH_SUBCATEGORY_LIST_SUCCESS,
   FETCH_SUBCATEGORY_LIST_FAILURE
@@ -23,14 +23,14 @@ const reducer = (state = initialState, action) => {
         loading: true,
         error: null
       };
-    case FETCH_USER_CATEGORY_LIST_SUCCESS:
+    case FETCH_CATEGORY_LIST_SUCCESS:
       return {
         ...state,
         loading: false,
         categoryList: action.payload,
         error: null
       };
-    case FETCH_USER_CATEGORY_LIST_FAILURE:
+    case FETCH_CATEGORY_LIST_FAILURE:
     case FETCH_SUBCATEGORY_LIST_FAILURE:
       return {
         ...state,

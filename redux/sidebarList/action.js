@@ -1,13 +1,19 @@
 import {
   FETCH_CATEGORY_LIST_REQUEST,
-  FETCH_USER_CATEGORY_LIST_SUCCESS,
-  FETCH_USER_CATEGORY_LIST_FAILURE,
+  FETCH_CATEGORY_LIST_SUCCESS,
+  FETCH_CATEGORY_LIST_FAILURE,
   FETCH_SUBCATEGORY_LIST_REQUEST,
   FETCH_SUBCATEGORY_LIST_SUCCESS,
   FETCH_SUBCATEGORY_LIST_FAILURE
 } from "./types";
 
-import { fetchSubCategoryListApi, fetchUserCategoryListApi } from "@/services/userCategories";
+import {
+  fetchSubCategoryListApi,
+  fetchCategoryListApi,
+  postCategoryApi,
+  postSubCategoryApi
+} from "@/services/categories";
+import { toast } from "react-hot-toast";
 
 export const fetchCategoryListRequest = () => {
   return {
@@ -15,16 +21,16 @@ export const fetchCategoryListRequest = () => {
   };
 };
 
-export const fetchUserCategoryListSuccess = (data) => {
+export const fetchCategoryListSuccess = (data) => {
   return {
-    type: FETCH_USER_CATEGORY_LIST_SUCCESS,
+    type: FETCH_CATEGORY_LIST_SUCCESS,
     payload: data
   };
 };
 
-export const fetchUserCategoryListFailure = (error) => {
+export const fetchCategoryListFailure = (error) => {
   return {
-    type: FETCH_USER_CATEGORY_LIST_FAILURE,
+    type: FETCH_CATEGORY_LIST_FAILURE,
     payload: error
   };
 };
@@ -49,24 +55,42 @@ export const fetchSubCategoryListFailure = (error) => {
   };
 };
 
-export const fetchUserCategoryListThunkAction = (onSuccess = () => {}) => {
+export const fetchCategoryListThunkAction = (onSuccess = () => {}) => {
   return async (dispatch) => {
     try {
       dispatch(fetchCategoryListRequest());
 
-      const promise = fetchUserCategoryListApi();
+      const promise = fetchCategoryListApi();
 
       const { data } = await promise;
 
-      dispatch(fetchUserCategoryListSuccess(data?.categories));
+      dispatch(fetchCategoryListSuccess(data?.categories));
       onSuccess();
     } catch (error) {
-      dispatch(fetchUserCategoryListFailure(error));
+      dispatch(fetchCategoryListFailure(error));
     }
   };
 };
 
-export const fetchUserSubCategoryListThunkAction = (categoryId, onSuccess = () => {}) => {
+export const addNewCategoryThunkAction = (reqBody, onSuccess = () => {}) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await postCategoryApi(reqBody);
+
+      if (data.success === false) {
+        throw new Error(data.message);
+      }
+
+      toast.success(data.message);
+      onSuccess();
+    } catch (error) {
+      console.log(error?.response?.data?.message || error?.message);
+      toast.error(error?.response?.data?.message || error?.message);
+    }
+  };
+};
+
+export const fetchSubCategoryListThunkAction = (categoryId, onSuccess = () => {}) => {
   return async (dispatch) => {
     try {
       dispatch(fetchSubCategoryListRequest());
@@ -79,6 +103,25 @@ export const fetchUserSubCategoryListThunkAction = (categoryId, onSuccess = () =
       onSuccess();
     } catch (error) {
       dispatch(fetchSubCategoryListFailure(error));
+    }
+  };
+};
+
+export const addNewSubCategoryThunkAction = (reqBody, onSuccess = () => {}) => {
+  console.log("reqBody", reqBody);
+  return async (dispatch) => {
+    try {
+      const { data } = await postSubCategoryApi(reqBody);
+
+      if (data.success === false) {
+        throw new Error(data.message);
+      }
+
+      toast.success(data.message);
+      onSuccess();
+    } catch (error) {
+      console.log(error?.response?.data?.message || error?.message);
+      toast.error(error?.response?.data?.message || error?.message);
     }
   };
 };

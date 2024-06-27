@@ -1,16 +1,31 @@
 import { Breadcrumbs, Input, Button, Typography } from "@material-tailwind/react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCategoryList } from "@/redux/sidebarList/selectors";
+import {
+  fetchCategoryListThunkAction,
+  addNewSubCategoryThunkAction
+} from "@/redux/sidebarList/action";
 
 const AddSubCategory = () => {
-  const options = [
-    { value: 1, label: "Chocolate" },
-    { value: 2, label: "Strawberry" },
-    { value: 3, label: "Vanilla" }
-  ];
+  const dispatch = useDispatch();
+  const [options, setOptions] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const categories = useSelector(selectCategoryList);
+
+  useEffect(() => {
+    dispatch(fetchCategoryListThunkAction());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (categories && categories.length > 0) {
+      setOptions(categories.map((category) => ({ value: category.c_id, label: category.name })));
+    }
+  }, [categories]);
 
   const formik = useFormik({
     initialValues: {
@@ -21,8 +36,16 @@ const AddSubCategory = () => {
       subCategoryName: Yup.string().trim().required("Subcategory Name is required."),
       categoryId: Yup.string().trim().required("Category is required.")
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      console.log("Form Submitted:", values);
+      const data = { name: values.subCategoryName, c_id: values.categoryId };
+      console.log(data);
+      dispatch(
+        addNewSubCategoryThunkAction(data, () => {
+          resetForm();
+          setSelectedOption(null);
+        })
+      );
     }
   });
 
@@ -52,8 +75,8 @@ const AddSubCategory = () => {
                 </Typography>
                 <Input
                   size="lg"
-                  placeholder="category name.."
-                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  placeholder="category name..."
+                  className="!border-t-blue-gray-200 focus:!border-t-gray-900"
                   labelProps={{
                     className: "before:content-none after:content-none"
                   }}
@@ -69,7 +92,11 @@ const AddSubCategory = () => {
                   Select Category
                 </Typography>
                 <Select
-                  onChange={(option) => formik.setFieldValue("categoryId", option.value)}
+                  value={selectedOption}
+                  onChange={(option) => {
+                    setSelectedOption(option);
+                    formik.setFieldValue("categoryId", option.value);
+                  }}
                   options={options}
                 />
               </div>
@@ -77,12 +104,12 @@ const AddSubCategory = () => {
                 <div className="text-red-800 mt-1">{formik.errors.categoryId}</div>
               ) : null}
 
-              <div className="flex items-center justify-center ">
+              <div className="flex items-center justify-center">
                 <Button
                   className="mt-4 bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
                   type="submit"
                 >
-                  submit
+                  Submit
                 </Button>
               </div>
             </form>

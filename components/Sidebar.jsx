@@ -2,7 +2,7 @@
 import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { fetchUserSubCategoryListThunkAction } from "@/redux/sidebarList/action";
+import { fetchSubCategoryListThunkAction } from "@/redux/sidebarList/action";
 import { selectSubCategoryList } from "@/redux/sidebarList/selectors";
 import { SidebarContext } from "@/app/user/page";
 import Link from "next/link";
@@ -27,7 +27,7 @@ const Sidebar = ({ categories, isSidebarOpen, toggleSidebar }) => {
     });
 
     if (!openMenus[menu]) {
-      dispatch(fetchUserSubCategoryListThunkAction(categoryId));
+      dispatch(fetchSubCategoryListThunkAction(categoryId));
     }
   };
 

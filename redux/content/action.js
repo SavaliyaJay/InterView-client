@@ -1,10 +1,11 @@
 import {
   fetchAnswerOfQuestionApi,
   fetchSuggestionApi,
-  fetchUserContentListApi,
+  fetchContentListApi,
   postAnswerApi,
-  putAnswerOfQuestionApi
-} from "@/services/userContent";
+  putAnswerOfQuestionApi,
+  postQuestionApi
+} from "@/services/content";
 import {
   FETCH_QUESTION_LIST_REQUEST,
   FETCH_QUESTION_LIST_SUCCESS,
@@ -84,7 +85,7 @@ export const fetchQuestionListThunkAction = ({ subCategoryId, param }, onSuccess
     try {
       dispatch(fetchQuestionListRequest());
 
-      const promise = await fetchUserContentListApi({ subCategoryId, param });
+      const promise = await fetchContentListApi({ subCategoryId, param });
 
       dispatch(fetchQuestionListSuccess(promise.data));
 
@@ -92,6 +93,25 @@ export const fetchQuestionListThunkAction = ({ subCategoryId, param }, onSuccess
     } catch (error) {
       dispatch(fetchQuestionListFailure(error));
       toast.error(error.response.data.message);
+    }
+  };
+};
+
+export const addQuestionThunkAction = (reqbody, onSuccess = () => {}) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await postQuestionApi(reqbody);
+
+      if (data.success === false) {
+        throw new Error(data.message);
+      }
+
+      toast.success(data.message);
+
+      onSuccess();
+    } catch (error) {
+      console.log(error?.response?.data?.message || error?.message);
+      toast.error(error?.response?.data?.message || error?.message);
     }
   };
 };
