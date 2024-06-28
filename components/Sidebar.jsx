@@ -2,15 +2,17 @@
 import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { fetchSubCategoryListThunkAction } from "@/redux/sidebarList/action";
-import { selectSubCategoryList } from "@/redux/sidebarList/selectors";
 import { SidebarContext } from "@/app/user/page";
 import Link from "next/link";
+import { selectSubCategoryList } from "@/redux/subcategory/selectors";
+import { fetchSubCategoryListThunkAction } from "@/redux/subcategory/actions";
 
 const Sidebar = ({ categories, isSidebarOpen, toggleSidebar }) => {
   const [openMenus, setOpenMenus] = useState({});
   const dispatch = useDispatch();
-  const subCategories = useSelector(selectSubCategoryList);
+  const { SubCategoryList } = useSelector(selectSubCategoryList);
+
+  // console.log(categories);
   const { setSubCategoryData } = useContext(SidebarContext);
 
   const toggleSubMenu = (menu, categoryId) => {
@@ -70,7 +72,7 @@ const Sidebar = ({ categories, isSidebarOpen, toggleSidebar }) => {
               className="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold"
               id="submenu"
             >
-              {subCategories?.map((subCat) => (
+              {SubCategoryList?.map((subCat) => (
                 <h1
                   key={subCat.sc_id}
                   onClick={() =>

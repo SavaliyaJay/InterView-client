@@ -4,13 +4,16 @@ import React from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchLoginUserThunkAction } from "@/redux/auth/action";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import { selectUser } from "@/redux/auth/selectors";
 
 const page = () => {
   const dispatch = useDispatch();
+
+  const { isSigning } = useSelector(selectUser);
 
   const router = useRouter();
 
@@ -97,6 +100,7 @@ const page = () => {
                   <Button
                     className="mt-6 flex bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
                     type="submit"
+                    disabled={isSigning}
                   >
                     Sign In
                   </Button>

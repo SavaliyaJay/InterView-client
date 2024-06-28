@@ -4,13 +4,12 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
-import { selectCategoryList, selectSubCategoryList } from "@/redux/sidebarList/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCategoryListThunkAction,
-  fetchSubCategoryListThunkAction
-} from "@/redux/sidebarList/action";
 import { addQuestionThunkAction } from "@/redux/content/action";
+import { selectCategoryList } from "@/redux/category/selectors";
+import { selectSubCategoryList } from "@/redux/subcategory/selectors";
+import { fetchCategoryListThunkAction } from "@/redux/category/actions";
+import { fetchSubCategoryListThunkAction } from "@/redux/subcategory/actions";
 
 const AddQuestion = () => {
   const dispatch = useDispatch();
@@ -18,20 +17,20 @@ const AddQuestion = () => {
   const [optionsOfSubCategory, setOptionsOfSubCategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
-  const categories = useSelector(selectCategoryList);
-  const subCategories = useSelector(selectSubCategoryList);
+  const { CategoryList } = useSelector(selectCategoryList);
+  const { SubCategoryList } = useSelector(selectSubCategoryList);
 
   useEffect(() => {
     dispatch(fetchCategoryListThunkAction());
   }, [dispatch]);
 
   useEffect(() => {
-    if (categories && categories.length > 0) {
+    if (CategoryList && CategoryList.length > 0) {
       setOptionsOfCategory(
-        categories.map((category) => ({ value: category.c_id, label: category.name }))
+        CategoryList.map((category) => ({ value: category.c_id, label: category.name }))
       );
     }
-  }, [categories]);
+  }, [CategoryList]);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -41,12 +40,15 @@ const AddQuestion = () => {
   }, [dispatch, selectedCategory]);
 
   useEffect(() => {
-    if (subCategories && subCategories.length > 0) {
+    if (SubCategoryList && SubCategoryList.length > 0) {
       setOptionsOfSubCategory(
-        subCategories.map((subCategory) => ({ value: subCategory.sc_id, label: subCategory.name }))
+        SubCategoryList.map((subCategory) => ({
+          value: subCategory.sc_id,
+          label: subCategory.name
+        }))
       );
     }
-  }, [subCategories]);
+  }, [SubCategoryList]);
 
   const formik = useFormik({
     initialValues: {

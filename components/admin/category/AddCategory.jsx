@@ -4,7 +4,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { addNewCategoryThunkAction } from "@/redux/sidebarList/action";
+import { addNewCategoryThunkAction } from "@/redux/category/actions";
 
 const AddCategory = () => {
   const dispatch = useDispatch();

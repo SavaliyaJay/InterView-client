@@ -3,15 +3,16 @@ import React, { useEffect, useState, createContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "@/components/Sidebar";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { selectCategoryList } from "@/redux/sidebarList/selectors";
-import { fetchCategoryListThunkAction } from "@/redux/sidebarList/action";
+import { selectCategoryList } from "@/redux/category/selectors";
 import MainContent from "./MainContent";
+import { fetchCategoryListThunkAction } from "@/redux/category/actions";
 
 export const SidebarContext = createContext();
 
 const SidebarPage = () => {
   const dispatch = useDispatch();
-  const categories = useSelector(selectCategoryList);
+  const { CategoryList } = useSelector(selectCategoryList);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [subCategoryData, setSubCategoryData] = useState(null);
 
@@ -38,7 +39,7 @@ const SidebarPage = () => {
           }`}
         >
           <Sidebar
-            categories={categories}
+            categories={CategoryList}
             isSidebarOpen={isSidebarOpen}
             toggleSidebar={toggleSidebar}
           />

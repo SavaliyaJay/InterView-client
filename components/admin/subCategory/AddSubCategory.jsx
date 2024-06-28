@@ -5,27 +5,25 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCategoryList } from "@/redux/sidebarList/selectors";
-import {
-  fetchCategoryListThunkAction,
-  addNewSubCategoryThunkAction
-} from "@/redux/sidebarList/action";
+import { fetchCategoryListThunkAction } from "@/redux/category/actions";
+import { addNewSubCategoryThunkAction } from "@/redux/subcategory/actions";
+import { selectCategoryList } from "@/redux/category/selectors";
 
 const AddSubCategory = () => {
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
-  const categories = useSelector(selectCategoryList);
+  const { CategoryList } = useSelector(selectCategoryList);
 
   useEffect(() => {
     dispatch(fetchCategoryListThunkAction());
   }, [dispatch]);
 
   useEffect(() => {
-    if (categories && categories.length > 0) {
-      setOptions(categories.map((category) => ({ value: category.c_id, label: category.name })));
+    if (CategoryList && CategoryList.length > 0) {
+      setOptions(CategoryList.map((category) => ({ value: category.c_id, label: category.name })));
     }
-  }, [categories]);
+  }, [CategoryList]);
 
   const formik = useFormik({
     initialValues: {
