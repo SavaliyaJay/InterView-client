@@ -8,7 +8,7 @@ import {
   FETCH_CATEGORY_BY_ID_FAILURE
 } from "./types";
 
-import { fetchCategoryListApi, postCategoryApi } from "@/services/categories";
+import { getCategoryByIdApi, postCategoryApi } from "@/services/Category";
 
 import { toast } from "react-hot-toast";
 
@@ -62,7 +62,7 @@ export const fetchCategoryListThunkAction = (onSuccess = () => {}, onError = () 
   return async (dispatch) => {
     try {
       dispatch(fetchCategoryListRequest());
-      const promise = fetchCategoryListApi();
+      const promise = getCategoryByIdApi();
       const { data } = await promise;
       dispatch(fetchCategoryListSuccess(data?.categories));
       onSuccess();

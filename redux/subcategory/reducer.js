@@ -3,6 +3,10 @@ import {
   FETCH_SUB_CATEGORY_LIST_SUCCESS,
   FETCH_SUB_CATEGORY_LIST_FAILURE,
   RESET_SUB_CATEGORY_LIST_DATA,
+  FETCH_SUB_CATEGORY_BY_ID_LIST_REQUEST,
+  FETCH_SUB_CATEGORY_BY_ID_LIST_SUCCESS,
+  FETCH_SUB_CATEGORY_BY_ID_LIST_FAILURE,
+  RESET_SUB_CATEGORY_BY_ID_LIST_DATA,
   FETCH_SUB_CATEGORY_BY_ID_REQUEST,
   FETCH_SUB_CATEGORY_BY_ID_SUCCESS,
   FETCH_SUB_CATEGORY_BY_ID_FAILURE
@@ -12,6 +16,7 @@ const initialState = {
   isLoading: false,
   error: "",
   SubCategoryList: [],
+  SubCategoryByIdList: [],
   SubCategory: {}
 };
 
@@ -40,6 +45,30 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         SubCategoryList: []
+      };
+    case FETCH_SUB_CATEGORY_BY_ID_LIST_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case FETCH_SUB_CATEGORY_BY_ID_LIST_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        SubCategoryByIdList: action.payload.SubCategoryByIdList,
+        error: ""
+      };
+    case FETCH_SUB_CATEGORY_BY_ID_LIST_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        SubCategoryByIdList: [],
+        error: action.payload
+      };
+    case RESET_SUB_CATEGORY_BY_ID_LIST_DATA:
+      return {
+        ...state,
+        SubCategoryByIdList: []
       };
     case FETCH_SUB_CATEGORY_BY_ID_REQUEST:
       return {

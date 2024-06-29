@@ -9,11 +9,11 @@ export const postQuestionApi = (data) => axiosInstance.post("/v1/question/", dat
 
 export const postAnswerApi = (data) => axiosInstance.post("/v1/answer/", data);
 
-export const fetchAnswerOfQuestionApi = (question_id) => {
+export const getAnswerOfQuestionByIdApi = (question_id) => {
   return axiosInstance.get(`/v1/answer/question/${question_id}`);
 };
 
 export const putAnswerOfQuestionApi = (data) =>
   axiosInstance.put(`/v1/answer/${data.answer_id}`, data);
 
-export const fetchSuggestionApi = (data) => axiosInstance.get("/v1/suggestion", { params: data });
+export const getSuggestionApi = (data) => axiosInstance.get("/v1/suggestion", { params: data });

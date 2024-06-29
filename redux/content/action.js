@@ -1,6 +1,6 @@
 import {
-  fetchAnswerOfQuestionApi,
-  fetchSuggestionApi,
+  getAnswerOfQuestionByIdApi,
+  getSuggestionApi,
   fetchContentListApi,
   postAnswerApi,
   putAnswerOfQuestionApi,
@@ -140,7 +140,7 @@ export const fetchAnswerOfQuestionThunkAction = (questionId, onSuccess = () => {
     try {
       dispatch(fetchAnswerListRequest());
 
-      const response = await fetchAnswerOfQuestionApi(questionId);
+      const response = await getAnswerOfQuestionByIdApi(questionId);
 
       dispatch(fetchAnswerListSuccess(response.data));
 
@@ -176,7 +176,7 @@ export const fetchSuggestionThunkAction = (data, onSuccess = () => {}) => {
     try {
       dispatch(fetchSuggestionRequest());
 
-      const promise = await fetchSuggestionApi(data);
+      const promise = await getSuggestionApi(data);
 
       dispatch(fetchSuggestionSuccess(promise.data));
 

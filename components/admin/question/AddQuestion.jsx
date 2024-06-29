@@ -9,7 +9,7 @@ import { addQuestionThunkAction } from "@/redux/content/action";
 import { selectCategoryList } from "@/redux/category/selectors";
 import { selectSubCategoryList } from "@/redux/subcategory/selectors";
 import { fetchCategoryListThunkAction } from "@/redux/category/actions";
-import { fetchSubCategoryListThunkAction } from "@/redux/subcategory/actions";
+import { fetchSubCategoryListByIdThunkAction } from "@/redux/subcategory/actions";
 
 const AddQuestion = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const AddQuestion = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const { CategoryList } = useSelector(selectCategoryList);
-  const { SubCategoryList } = useSelector(selectSubCategoryList);
+  const { SubCategoryByIdList } = useSelector(selectSubCategoryList);
 
   useEffect(() => {
     dispatch(fetchCategoryListThunkAction());
@@ -35,20 +35,20 @@ const AddQuestion = () => {
   useEffect(() => {
     if (selectedCategory) {
       setOptionsOfSubCategory([]);
-      dispatch(fetchSubCategoryListThunkAction(selectedCategory.value));
+      dispatch(fetchSubCategoryListByIdThunkAction(selectedCategory.value));
     }
   }, [dispatch, selectedCategory]);
 
   useEffect(() => {
-    if (SubCategoryList && SubCategoryList.length > 0) {
+    if (SubCategoryByIdList && SubCategoryByIdList.length > 0) {
       setOptionsOfSubCategory(
-        SubCategoryList.map((subCategory) => ({
+        SubCategoryByIdList.map((subCategory) => ({
           value: subCategory.sc_id,
           label: subCategory.name
         }))
       );
     }
-  }, [SubCategoryList]);
+  }, [SubCategoryByIdList]);
 
   const formik = useFormik({
     initialValues: {

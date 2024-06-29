@@ -3,13 +3,21 @@ import {
   FETCH_SUB_CATEGORY_LIST_SUCCESS,
   FETCH_SUB_CATEGORY_LIST_FAILURE,
   RESET_SUB_CATEGORY_LIST_DATA,
+  FETCH_SUB_CATEGORY_BY_ID_LIST_REQUEST,
+  FETCH_SUB_CATEGORY_BY_ID_LIST_SUCCESS,
+  FETCH_SUB_CATEGORY_BY_ID_LIST_FAILURE,
+  RESET_SUB_CATEGORY_BY_ID_LIST_DATA,
   FETCH_SUB_CATEGORY_BY_ID_REQUEST,
   FETCH_SUB_CATEGORY_BY_ID_SUCCESS,
   FETCH_SUB_CATEGORY_BY_ID_FAILURE
 } from "./types";
 
 import { toast } from "react-hot-toast";
-import { fetchSubCategoryListApi, postSubCategoryApi } from "@/services/categories";
+import {
+  getSubCategoryByIdApi,
+  getSubCategoryListApi,
+  postSubCategoryApi
+} from "@/services/SubCategory";
 
 export const fetchSubCategoryListRequest = () => {
   return {
@@ -37,6 +45,32 @@ export const resetSubCategoryList = () => {
   };
 };
 
+export const fetchSubCategoryByIdListRequest = () => {
+  return {
+    type: FETCH_SUB_CATEGORY_BY_ID_LIST_REQUEST
+  };
+};
+
+export const fetchSubCategoryByIdListSuccess = (SubCategoryByIdList) => {
+  return {
+    type: FETCH_SUB_CATEGORY_BY_ID_LIST_SUCCESS,
+    payload: { SubCategoryByIdList }
+  };
+};
+
+export const fetchSubCategoryByIdListFailure = (error) => {
+  return {
+    type: FETCH_SUB_CATEGORY_BY_ID_LIST_FAILURE,
+    payload: error
+  };
+};
+
+export const resetSubCategoryByIdList = () => {
+  return {
+    type: RESET_SUB_CATEGORY_BY_ID_LIST_DATA
+  };
+};
+
 export const fetchSubCategoryByIdRequest = () => {
   return {
     type: FETCH_SUB_CATEGORY_BY_ID_REQUEST
@@ -57,21 +91,15 @@ export const fetchSubCategoryByIdFailure = (error) => {
   };
 };
 
-export const fetchSubCategoryListThunkAction = (
-  categoryId,
-  onSuccess = () => {},
-  onError = () => {}
-) => {
-  // console.log("fetchSubCategoryListThunkAction");
+export const fetchSubCategoryListThunkAction = (onSuccess = () => {}, onError = () => {}) => {
   return async (dispatch) => {
     try {
       dispatch(fetchSubCategoryListRequest());
 
-      const promise = fetchSubCategoryListApi(categoryId);
+      const promise = getSubCategoryListApi();
 
       const { data } = await promise;
 
-      console.log("fetchSubCategoryListThunkAction", data?.subCategories);
       dispatch(fetchSubCategoryListSuccess(data?.subCategories));
       onSuccess();
     } catch (error) {
@@ -81,8 +109,29 @@ export const fetchSubCategoryListThunkAction = (
   };
 };
 
+export const fetchSubCategoryListByIdThunkAction = (
+  categoryId,
+  onSuccess = () => {},
+  onError = () => {}
+) => {
+  return async (dispatch) => {
+    try {
+      dispatch(fetchSubCategoryByIdListRequest());
+
+      const promise = getSubCategoryByIdApi(categoryId);
+
+      const { data } = await promise;
+
+      dispatch(fetchSubCategoryByIdListSuccess(data?.subCategories));
+      onSuccess();
+    } catch (error) {
+      dispatch(fetchSubCategoryByIdListFailure(error));
+      onError();
+    }
+  };
+};
+
 export const addNewSubCategoryThunkAction = (reqBody, onSuccess = () => {}) => {
-  console.log("reqBody", reqBody);
   return async (dispatch) => {
     try {
       const { data } = await postSubCategoryApi(reqBody);
