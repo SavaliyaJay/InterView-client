@@ -92,10 +92,12 @@ export const fetchLoginUserThunkAction = ({ email, password }, onSuccess) => {
 
       localStorage.setItem("token", data.data.accessToken);
       localStorage.setItem("role", data.data.role);
+      localStorage.setItem("user", data.data.username);
       dispatch(
         setLoggedInUser({
           token: data.accessToken,
-          role: data.data.role
+          role: data.data.role,
+          user: data.data.username
         })
       );
       onSuccess();

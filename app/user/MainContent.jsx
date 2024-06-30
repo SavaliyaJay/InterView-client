@@ -5,15 +5,15 @@ import SuggestionCard from "./SuggestionCard";
 import { Breadcrumbs, Button, Progress, Typography } from "@material-tailwind/react";
 import { selectContentList } from "@/redux/content/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchQuestionListThunkAction } from "@/redux/content/action";
+import { fetchQuestionListByIdThunkAction } from "@/redux/content/action";
 import Link from "next/link";
 
 const MainContent = ({ subCategoryData }) => {
   const dispatch = useDispatch();
 
-  const { questions } = useSelector(selectContentList);
+  const { questionByIdList } = useSelector(selectContentList);
 
-  const totalPage = questions?.totalPages || 0;
+  const totalPage = questionByIdList?.totalPages || 0;
   const [currentPage, setCurrentPage] = useState(1);
 
   const { subCategoryId, categoryName, subCategoryName } = subCategoryData;
@@ -24,7 +24,7 @@ const MainContent = ({ subCategoryData }) => {
       limit: 1
     };
     if (subCategoryId) {
-      dispatch(fetchQuestionListThunkAction({ subCategoryId, param }));
+      dispatch(fetchQuestionListByIdThunkAction({ subCategoryId, param }));
     }
   }, [subCategoryId, currentPage]);
 
@@ -67,11 +67,11 @@ const MainContent = ({ subCategoryData }) => {
       <div className="flex-grow flex mt-3 ml-1 mb-3">
         <div className="flex-grow bg-[#f1f1f1] rounded-md p-4">
           <div className="flex flex-col gap-2">
-            <QuestionCard questions={questions?.questions} />
+            <QuestionCard questions={questionByIdList?.questions} />
             <div className="bg-[#fff] rounded-md">
-              <AnswerCard questions={questions?.questions} keyProp={currentPage} />
+              <AnswerCard questions={questionByIdList?.questions} keyProp={currentPage} />
             </div>
-            <SuggestionCard questions={questions?.questions} />
+            <SuggestionCard questions={questionByIdList?.questions} />
           </div>
         </div>
       </div>

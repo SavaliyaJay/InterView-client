@@ -1,6 +1,8 @@
 import axiosInstance from "./axiosInstance";
 
-export const fetchContentListApi = ({ subCategoryId, param }) =>
+export const fetchContentListApi = () => axiosInstance.get("/v1/question");
+
+export const fetchContentListByIdApi = ({ subCategoryId, param }) =>
   axiosInstance.get(
     `/v1/question/subCategory/${subCategoryId}?page=${param.page}&limit=${param.limit}`
   );

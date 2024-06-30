@@ -10,6 +10,9 @@ import {
   FETCH_QUESTION_LIST_REQUEST,
   FETCH_QUESTION_LIST_SUCCESS,
   FETCH_QUESTION_LIST_FAILURE,
+  FETCH_QUESTION_LIST_BY_ID_REQUEST,
+  FETCH_QUESTION_LIST_BY_ID_SUCCESS,
+  FETCH_QUESTION_LIST_BY_ID_FAILURE,
   FETCH_ANSWER_LIST_REQUEST,
   FETCH_ANSWER_LIST_SUCCESS,
   FETCH_ANSWER_LIST_FAILURE,
@@ -36,6 +39,26 @@ export const fetchQuestionListSuccess = (questions) => {
 export const fetchQuestionListFailure = (error) => {
   return {
     type: FETCH_QUESTION_LIST_FAILURE,
+    payload: error
+  };
+};
+
+export const fetchQuestionListByIdRequest = () => {
+  return {
+    type: FETCH_QUESTION_LIST_BY_ID_REQUEST
+  };
+};
+
+export const fetchQuestionListByIdSuccess = (question) => {
+  return {
+    type: FETCH_QUESTION_LIST_BY_ID_SUCCESS,
+    payload: question
+  };
+};
+
+export const fetchQuestionListByIdFailure = (error) => {
+  return {
+    type: FETCH_QUESTION_LIST_BY_ID_FAILURE,
     payload: error
   };
 };
@@ -80,19 +103,40 @@ export const fetchSuggestionFailure = (error) => {
   };
 };
 
-export const fetchQuestionListThunkAction = ({ subCategoryId, param }, onSuccess = () => {}) => {
+export const fetchQuestionListThunkAction = (onSuccess = () => {}) => {
   return async (dispatch) => {
     try {
       dispatch(fetchQuestionListRequest());
+      const promise = await fetchContentListApi();
 
-      const promise = await fetchContentListApi({ subCategoryId, param });
-
-      dispatch(fetchQuestionListSuccess(promise.data));
+      dispatch(fetchQuestionListSuccess(promise.data.questions));
 
       onSuccess();
     } catch (error) {
       dispatch(fetchQuestionListFailure(error));
-      toast.error(error.response.data.message);
+      console.log(error?.response?.data?.message || error?.message);
+      toast.error(error?.response?.data?.message || error?.message);
+    }
+  };
+};
+
+export const fetchQuestionListByIdThunkAction = (
+  { subCategoryId, param },
+  onSuccess = () => {}
+) => {
+  return async (dispatch) => {
+    try {
+      dispatch(fetchQuestionListByIdRequest());
+
+      const promise = await fetchContentListByIdApi({ subCategoryId, param });
+
+      dispatch(fetchQuestionListByIdSuccess(promise.data));
+
+      onSuccess();
+    } catch (error) {
+      dispatch(fetchQuestionListByIdFailure(error));
+      console.log(error?.response?.data?.message || error?.message);
+      toast.error(error?.response?.data?.message || error?.message);
     }
   };
 };
@@ -130,7 +174,8 @@ export const postAnswerThunkAction = (answer, onSuccess = () => {}) => {
 
       onSuccess();
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log(error?.response?.data?.message || error?.message);
+      toast.error(error?.response?.data?.message || error?.message);
     }
   };
 };
@@ -166,7 +211,8 @@ export const putAnswerOfQuestionThunkAction = (data, onSuccess = () => {}) => {
 
       onSuccess();
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log(error?.response?.data?.message || error?.message);
+      toast.error(error?.response?.data?.message || error?.message);
     }
   };
 };
@@ -183,7 +229,8 @@ export const fetchSuggestionThunkAction = (data, onSuccess = () => {}) => {
       onSuccess();
     } catch (error) {
       dispatch(fetchSuggestionFailure(error));
-      toast.error(error.response.data.message);
+      console.log(error?.response?.data?.message || error?.message);
+      toast.error(error?.response?.data?.message || error?.message);
     }
   };
 };

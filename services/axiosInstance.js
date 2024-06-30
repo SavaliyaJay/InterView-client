@@ -33,12 +33,12 @@ instance.interceptors.response.use(
       toast.error("Network error");
       localStorage.removeItem("token");
       localStorage.removeItem("role");
-      // localStorage.removeItem("user");
+      localStorage.removeItem("user");
     }
     if (error?.response?.status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("role");
-      // localStorage.removeItem("user");
+      localStorage.removeItem("user");
       // localStorage.removeItem("isVerified");
       // localStorage.removeItem("isOnboardCount");
 

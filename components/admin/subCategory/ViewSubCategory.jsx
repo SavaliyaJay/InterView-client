@@ -7,11 +7,8 @@ import { useTable } from "react-table";
 import { Typography } from "@material-tailwind/react";
 
 const ViewSubCategory = () => {
-  console.log("ViewSubCategory");
   const dispatch = useDispatch();
   const { SubCategoryList } = useSelector(selectSubCategoryList);
-
-  console.log(SubCategoryList);
 
   useEffect(() => {
     dispatch(fetchSubCategoryListThunkAction());
