@@ -4,7 +4,8 @@ import {
   fetchContentListApi,
   postAnswerApi,
   putAnswerOfQuestionApi,
-  postQuestionApi
+  postQuestionApi,
+  fetchContentListByIdApi
 } from "@/services/content";
 import {
   FETCH_QUESTION_LIST_REQUEST,
