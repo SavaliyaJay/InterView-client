@@ -16,6 +16,8 @@ const MainContent = ({ subCategoryData }) => {
   const totalPage = questionByIdList?.totalPages || 0;
   const [currentPage, setCurrentPage] = useState(1);
 
+  console.log("totalPage:", totalPage);
+
   const { subCategoryId, categoryName, subCategoryName } = subCategoryData;
 
   useEffect(() => {
@@ -68,7 +70,7 @@ const MainContent = ({ subCategoryData }) => {
         <div className="flex-grow bg-[#f1f1f1] rounded-md p-4">
           <div className="flex flex-col gap-2">
             <QuestionCard questions={questionByIdList?.questions} />
-            <div className="bg-[#fff] rounded-md">
+            <div className="bg-[#fff] rounded-md w-[26rem] md:w-[48rem] lg:w-[57rem]">
               <AnswerCard questions={questionByIdList?.questions} keyProp={currentPage} />
             </div>
             <SuggestionCard questions={questionByIdList?.questions} />

@@ -101,10 +101,10 @@ const AnswerCard = ({ questions, keyProp }) => {
             {!updateAnswer && answers && answers.answers ? (
               <>
                 <div className="mt-2">
-                  <span>{answers.answers.answer}</span>
+                  <span className="break-words overflow-hidden">{answers.answers.answer}</span>
                   <div className="flex justify-end items-center mt-3">
                     <Button
-                      className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding text-transparent bg-opacity-50 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
+                      className="bg-gradient-to-r from-blue-500 to-purple-400 text-white font-bold rounded-md hover:from-blue-700 hover:to-purple-600"
                       onClick={handleUpdateSubmit}
                     >
                       Update Answer

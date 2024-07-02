@@ -44,7 +44,7 @@ const SidebarPage = () => {
             toggleSidebar={toggleSidebar}
           />
         </div>
-        <div className="flex flex-col flex-grow lg:ml-[300px] mt-[2.5rem] lg:mt-0 p-4 justify-between">
+        <div className="flex flex-col flex-grow w-10 lg:ml-[300px] mt-[2.5rem] lg:mt-0 p-4 justify-between">
           {!subCategoryData ? "No data found." : <MainContent subCategoryData={subCategoryData} />}
         </div>
       </div>
