@@ -143,7 +143,7 @@ const Page = () => {
   const onSuccess = (userData) => {
     // Store user data in localStorage
     if (typeof window !== "undefined") {
-      localStorage.setItem("token", userData.token);
+      localStorage.setItem("token", userData.accessToken);
       localStorage.setItem("role", userData.role);
       localStorage.setItem("user", JSON.stringify(userData.user));
     }
