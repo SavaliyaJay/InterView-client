@@ -41,8 +41,8 @@ export function middleware(request) {
 
   const isPublicPath = path === "/auth/login" || path === "/auth/register";
 
-  const token = request.cookies.get("token")?.value || "";
-  const role = request.cookies.get("role")?.value || "";
+  // Try to get role from query parameters or default to empty string
+  const role = request.nextUrl.searchParams.get("role") || "";
 
   if (isPublicPath && role === "0") {
     return NextResponse.redirect(new URL("/admin", request.url));
@@ -52,17 +52,8 @@ export function middleware(request) {
     return NextResponse.redirect(new URL("/user", request.url));
   }
 
-  if (!isPublicPath && !token) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
-  }
-
-  if (request.nextUrl.pathname.startsWith("/admin") && role === "1") {
-    return NextResponse.redirect(new URL("/user", request.url));
-  }
-
-  if (request.nextUrl.pathname.startsWith("/user") && role === "0") {
-    return NextResponse.redirect(new URL("/admin", request.url));
-  }
+  // Remove role-based checks that depend on cookies
+  // You'll need to handle authentication on the client-side
 
   return NextResponse.next();
 }

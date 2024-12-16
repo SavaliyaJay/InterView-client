@@ -65,10 +65,9 @@ const instance = axios.create({
 // Request interceptor
 instance.interceptors.request.use(
   (config) => {
-    // Check if this is running in the browser
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("token");
-      if (token != null) {
+      if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
@@ -87,22 +86,20 @@ instance.interceptors.response.use(
   (error) => {
     if (typeof window !== "undefined") {
       if (axios.isCancel(error)) {
-        // console.log('canceled');
-      } else if (!error.response) {
+        // Request canceled
+        return;
+      }
+
+      if (!error.response) {
         toast.error("Network error");
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        localStorage.removeItem("user");
+        ["token", "role", "user"].forEach((item) => localStorage.removeItem(item));
       }
 
       if (error?.response?.status === 401) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        localStorage.removeItem("user");
-
-        window.location.href = "/auth/login"; // More reliable than window.location.reload()
+        ["token", "role", "user"].forEach((item) => localStorage.removeItem(item));
+        window.location.href = "/auth/login";
       } else if (error.response) {
-        // Optional: show error message for other status codes
+        // Optionally show error message
         toast.error(error.response.data.message || "An error occurred");
       }
     }
