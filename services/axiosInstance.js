@@ -1,58 +1,3 @@
-// import axios from "axios";
-// import toast from "react-hot-toast";
-
-// // Axios Instance
-// const instance = axios.create({
-//   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
-//   withCredentials: true
-// });
-
-// // Request interceptor
-// instance.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("token");
-//     if (token != null) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
-// // Response interceptor
-// instance.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (axios.isCancel(error)) {
-//       // console.log('canceled');
-//     } else if (!error.response) {
-//       toast.error("Network error");
-//       localStorage.removeItem("token");
-//       localStorage.removeItem("role");
-//       localStorage.removeItem("user");
-//     }
-//     if (error?.response?.status === 401) {
-//       localStorage.removeItem("token");
-//       localStorage.removeItem("role");
-//       localStorage.removeItem("user");
-//       // localStorage.removeItem("isVerified");
-//       // localStorage.removeItem("isOnboardCount");
-
-//       window.location.reload();
-//     } else {
-//       // toast.error(error.response.data.message);
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
-
-// export default instance;
-
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -65,11 +10,9 @@ const instance = axios.create({
 // Request interceptor
 instance.interceptors.request.use(
   (config) => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+    const token = localStorage.getItem("token");
+    if (token != null) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -84,24 +27,24 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (typeof window !== "undefined") {
-      if (axios.isCancel(error)) {
-        // Request canceled
-        return;
-      }
+    if (axios.isCancel(error)) {
+      // console.log('canceled');
+    } else if (!error.response) {
+      toast.error("Network error");
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("user");
+    }
+    if (error?.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("user");
+      // localStorage.removeItem("isVerified");
+      // localStorage.removeItem("isOnboardCount");
 
-      if (!error.response) {
-        toast.error("Network error");
-        ["token", "role", "user"].forEach((item) => localStorage.removeItem(item));
-      }
-
-      if (error?.response?.status === 401) {
-        ["token", "role", "user"].forEach((item) => localStorage.removeItem(item));
-        window.location.href = "/auth/login";
-      } else if (error.response) {
-        // Optionally show error message
-        toast.error(error.response.data.message || "An error occurred");
-      }
+      window.location.reload();
+    } else {
+      // toast.error(error.response.data.message);
     }
 
     return Promise.reject(error);
