@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Avatar, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 import { User, LogOut, Search, Rocket, Code, MessageSquare } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,6 +11,16 @@ const Navbar = () => {
   const [token, setToken] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [role, setRole] = useState(null);
+  const pathname = usePathname();
+
+  // Helper function to generate proper auth links
+  const getAuthLink = (path) => {
+    // If already on an auth page, use relative path to avoid duplication
+    if (pathname?.includes("/auth/")) {
+      return path.replace("/auth/", "");
+    }
+    return path;
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -46,6 +57,10 @@ const Navbar = () => {
       window.location.href = "/auth/login";
     }
   };
+
+  // Generate auth links
+  const loginLink = getAuthLink("/auth/login");
+  const registerLink = getAuthLink("/auth/register");
 
   return (
     <div
@@ -110,7 +125,7 @@ const Navbar = () => {
             <li>
               <Link
                 className={`text-sm font-medium transition-all flex items-center gap-2 ${!token ? "text-gray-400 cursor-not-allowed" : "hover:text-blue-500"}`}
-                href={token ? "/user" : "/auth/login"}
+                href={token ? "/user" : loginLink}
               >
                 <Code className="h-4 w-4" />
                 <span>Practice</span>
@@ -119,7 +134,7 @@ const Navbar = () => {
             <li>
               <Link
                 className={`text-sm font-medium transition-all flex items-center gap-2 ${!token ? "text-gray-400 cursor-not-allowed" : "hover:text-blue-500"}`}
-                href={token ? "/user/content" : "/auth/login"}
+                href={token ? "/user/content" : loginLink}
               >
                 <MessageSquare className="h-4 w-4" />
                 <span>Custom</span>
@@ -134,7 +149,7 @@ const Navbar = () => {
             <li>
               <Link
                 className={`text-sm font-medium transition-all flex items-center gap-2 ${!token ? "text-gray-400 cursor-not-allowed" : "hover:text-blue-500"}`}
-                href={token ? "/user" : "/auth/login"}
+                href={token ? "/user" : loginLink}
               >
                 <Code className="h-4 w-4" />
                 <span>Practice</span>
@@ -143,7 +158,7 @@ const Navbar = () => {
             <li>
               <Link
                 className={`text-sm font-medium transition-all flex items-center gap-2 ${!token ? "text-gray-400 cursor-not-allowed" : "hover:text-blue-500"}`}
-                href={token ? "/user/content" : "/auth/login"}
+                href={token ? "/user/content" : loginLink}
               >
                 <MessageSquare className="h-4 w-4" />
                 <span>Custom</span>
@@ -159,13 +174,13 @@ const Navbar = () => {
             <>
               <Link
                 className="py-2 px-6 bg-white/10 backdrop-blur-md border border-gray-300 dark:border-gray-700 hover:bg-white/20 text-sm font-bold rounded-xl transition-all"
-                href="auth/login"
+                href={loginLink}
               >
                 Sign In
               </Link>
               <Link
                 className="py-2 px-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all"
-                href="auth/register"
+                href={registerLink}
               >
                 Sign up
               </Link>
@@ -248,7 +263,7 @@ const Navbar = () => {
                 <li className="mb-1">
                   <Link
                     className={`flex items-center gap-3 p-4 text-sm font-medium rounded-xl transition-all ${!token ? "text-gray-400 cursor-not-allowed" : "text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600"}`}
-                    href={token ? "/user" : "/auth/login"}
+                    href={token ? "/user" : loginLink}
                   >
                     <Code className="h-5 w-5" />
                     <span>Practice</span>
@@ -257,7 +272,7 @@ const Navbar = () => {
                 <li className="mb-1">
                   <Link
                     className={`flex items-center gap-3 p-4 text-sm font-medium rounded-xl transition-all ${!token ? "text-gray-400 cursor-not-allowed" : "text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600"}`}
-                    href={token ? "/user/content" : "/auth/login"}
+                    href={token ? "/user/content" : loginLink}
                   >
                     <MessageSquare className="h-5 w-5" />
                     <span>Custom</span>
@@ -271,13 +286,13 @@ const Navbar = () => {
                 <div className="pt-6 space-y-3">
                   <Link
                     className="block py-3 px-4 text-center font-bold bg-white/50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-200 dark:border-gray-700 hover:bg-white/70 dark:hover:bg-gray-800/70 rounded-xl transition-all"
-                    href="auth/login"
+                    href={loginLink}
                   >
                     Sign in
                   </Link>
                   <Link
                     className="block py-3 px-4 text-center bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all"
-                    href="auth/register"
+                    href={registerLink}
                   >
                     Sign up
                   </Link>
