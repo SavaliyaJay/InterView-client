@@ -231,6 +231,40 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Footer */}
+      <footer className="relative py-8 border-t border-white/10 dark:border-gray-800/50">
+        {/* Subtle background glow */}
+        <div className="absolute bottom-0 left-1/3 w-64 h-32 bg-blue-500/10 rounded-full filter blur-3xl"></div>
+
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            {/* Logo and Copyright */}
+            <div className="flex items-center gap-2">
+              <Rocket className="h-5 w-5 text-blue-500" />
+              <Typography className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+                Interview.AI
+              </Typography>
+              <span className="text-gray-500 dark:text-gray-400 text-sm ml-4">
+                © {new Date().getFullYear()} All rights reserved
+              </span>
+            </div>
+
+            {/* Quick Links */}
+            <div className="flex gap-6">
+              {["About", "Features", "Pricing", "Support", "Contact"].map((link) => (
+                <Link
+                  key={link}
+                  href="#"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors"
+                >
+                  {link}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </footer>
+
       <style jsx global>{`
         @keyframes float {
           0% {
