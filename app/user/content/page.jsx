@@ -24,24 +24,6 @@ import Swal from "sweetalert2";
 import Link from "next/link";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
-const FileIcon = ({ type, className = "w-5 h-5" }) => {
-  const icons = {
-    pdf: <FiFile className={`${className} text-red-400`} />,
-    csv: <FiGrid className={`${className} text-green-400`} />,
-    doc: <FiFileText className={`${className} text-blue-400`} />,
-    text: <FiFileText className={`${className} text-gray-400`} />,
-    web: <FiGlobe className={`${className} text-purple-400`} />
-  };
-  return icons[type] || <FiFile className={`${className} text-gray-400`} />;
-};
-
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center p-4">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400" />
-    <span className="ml-2 text-gray-400">Processing...</span>
-  </div>
-);
-
 export default function FileExtractor() {
   const [fileResults, setFileResults] = useState([]);
   const [loadingStates, setLoadingStates] = useState({
@@ -78,6 +60,24 @@ export default function FileExtractor() {
   // Scroll to bottom of chat
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const LoadingSpinner = () => (
+    <div className="flex items-center justify-center p-4">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400" />
+      <span className="ml-2 text-gray-400">Processing...</span>
+    </div>
+  );
+
+  const FileIcon = ({ type, className = "w-5 h-5" }) => {
+    const icons = {
+      pdf: <FiFile className={`${className} text-red-400`} />,
+      csv: <FiGrid className={`${className} text-green-400`} />,
+      doc: <FiFileText className={`${className} text-blue-400`} />,
+      text: <FiFileText className={`${className} text-gray-400`} />,
+      web: <FiGlobe className={`${className} text-purple-400`} />
+    };
+    return icons[type] || <FiFile className={`${className} text-gray-400`} />;
   };
 
   useEffect(() => {
