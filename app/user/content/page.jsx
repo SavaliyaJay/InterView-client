@@ -989,53 +989,6 @@ Additional parameters:
         </div>
 
         {/* Message Input */}
-        {/* <div className="p-4 border-t border-gray-800/50 bg-gray-900/50 backdrop-blur-md">
-          <div className="flex space-x-2">
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder={
-                interviewMode && currentQuestion
-                  ? "Type your answer..."
-                  : "Type a message..."
-              }
-              className="flex-1 p-3 text-gray-200 bg-gray-800/70 rounded-lg border border-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none backdrop-blur-sm"
-              rows="3"
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-            />
-            <button
-              onClick={handleSendMessage}
-              disabled={
-                isSending ||
-                (!message.trim() && selectedFilesForChat.size === 0)
-              }
-              className={`px-4 self-end h-12 rounded-lg flex items-center justify-center transition-all ${isSending ||
-                (!message.trim() && selectedFilesForChat.size === 0)
-                ? "bg-gray-700/50 text-gray-500 cursor-not-allowed"
-                : "bg-blue-600/80 text-white hover:bg-blue-700/80 shadow-lg shadow-blue-500/20"
-                }`}
-            >
-              {isSending ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-              ) : (
-                <FiSend className="w-5 h-5" />
-              )}
-            </button>
-          </div>
-
-          {error && (
-            <div className="mt-2 text-red-400 text-sm animate-pulse">
-              {error}
-            </div>
-          )}
-        </div> */}
-
-        {/* Message Input */}
         <div className="p-4 border-t border-gray-800/50 bg-gray-900/50 backdrop-blur-md">
           <div className="flex space-x-2">
             <textarea
@@ -1106,3 +1059,13 @@ Additional parameters:
     </div>
   );
 }
+
+// import React from 'react'
+
+// const page = () => {
+//   return (
+//     <div>page</div>
+//   )
+// }
+
+// export default page
