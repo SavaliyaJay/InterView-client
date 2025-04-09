@@ -1,23 +1,32 @@
-import { Avatar, Button, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+"use client";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { Avatar, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import { User, LogOut, Search, Rocket, Code, MessageSquare } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const userRole = window.localStorage.getItem("role");
       const userName = window.localStorage.getItem("user");
-      setUser(userName);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
       const userToken = window.localStorage.getItem("token");
+
+      setUser(userName);
       setToken(userToken);
+      setRole(userRole);
+
+      const handleScroll = () => {
+        setIsScrolled(window.scrollY > 10);
+      };
+
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
     }
   }, []);
 
@@ -25,151 +34,189 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  const deleteCookie = (name) => {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-  };
-
   const handleLogout = () => {
     if (typeof window !== "undefined") {
       window.localStorage.removeItem("token");
       window.localStorage.removeItem("role");
       window.localStorage.removeItem("user");
-      deleteCookie("role");
+      document.cookie =
+        "role=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
+        window.location.hostname +
+        ";";
       window.location.href = "/auth/login";
     }
   };
 
   return (
-    <div className="bg-blue-500 sticky top-0 z-50">
-      <nav className="relative px-4 py-4 flex justify-between items-center bg-[#fff8f8]">
-        <Link className="text-3xl font-bold leading-none flex" href="/">
-          Interview
-          <div className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-text text-transparent">
-            .AI
+    <div
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "backdrop-blur-md bg-black/20 dark:bg-slate-900/60" : "bg-transparent"}`}
+    >
+      <nav
+        className={`relative px-6 py-4 flex justify-between items-center transition-all duration-300 text-gray-900"`}
+      >
+        <Link className="text-3xl font-bold leading-none flex items-center" href="/">
+          <div className="mr-2 text-4xl">
+            <Rocket className="h-8 w-8 text-blue-500" />
           </div>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
+            Interview.AI
+          </span>
         </Link>
-        <div className="lg:hidden flex flex-row gap-2">
-          <button
-            className="navbar-burger flex items-center text-blue-600 p-3"
-            onClick={toggleMenu}
-          >
-            <svg
-              className="block h-4 w-4 fill-current"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>Mobile menu</title>
-              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-            </svg>
-          </button>
-          <Menu>
-            <MenuHandler>
-              <div className="cursor-pointer">
-                <Avatar
-                  src="https://docs.material-tailwind.com/img/face-2.jpg"
-                  alt="avatar"
-                  size="sm"
-                />
-              </div>
-            </MenuHandler>
-            <MenuList>
-              <MenuItem>{user}</MenuItem>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            </MenuList>
-          </Menu>
-        </div>
-        <ul
-          className={`${
-            isOpen ? "" : "hidden"
-          } absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6`}
-        >
-          <li>
-            <Link className="text-sm text-gray-700 hover:text-gray-900" href="/">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link className="text-sm text-gray-700 hover:text-gray-900 font-bold" href="/">
-              About Us
-            </Link>
-          </li>
-          <li>
-            <Link className="text-sm text-gray-700 hover:text-gray-900" href="/">
-              Services
-            </Link>
-          </li>
-          <li>
-            <Link className="text-sm text-gray-700 hover:text-gray-900" href="/">
-              Pricing
-            </Link>
-          </li>
-          <li>
-            <Link className="text-sm text-gray-700 hover:text-gray-900" href="/">
-              Contact
-            </Link>
-          </li>
-        </ul>
-        {!token ? (
-          <>
-            <Link
-              className="hidden lg:inline-block lg:ml-auto lg:mr-3 p-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold rounded-xl transition duration-200"
-              href="auth/login"
-            >
-              Sign In
-            </Link>
-            <Link
-              className="hidden lg:inline-block bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding 
-                text-transparent font-bold bg-opacity-50 text-white p-2 px-6 rounded-xl 
-                hover:from-blue-700 hover:to-purple-600"
-              href="auth/register"
-            >
-              Sign up
-            </Link>
-          </>
-        ) : (
-          <>
-            <div className=" gap-2 hidden lg:flex ">
-              <Link
-                className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding 
-            text-transparent font-bold bg-opacity-50 text-white p-2 px-6 rounded-xl 
-            hover:from-blue-700 hover:to-purple-600"
-                href="/user"
+
+        <div className="lg:hidden flex flex-row gap-4 items-center">
+          <button className="flex items-center text-blue-600 p-2" onClick={toggleMenu}>
+            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
+              <svg
+                className="h-5 w-5 fill-current text-blue-500"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                My Dashboard
-              </Link>
-              <Menu>
-                <MenuHandler>
-                  <div className="cursor-pointer">
-                    <Avatar
-                      src="https://docs.material-tailwind.com/img/face-2.jpg"
-                      alt="avatar"
-                      size="sm"
-                    />
-                  </div>
-                </MenuHandler>
-                <MenuList>
-                  <MenuItem disabled>{user}</MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </MenuList>
-              </Menu>
+                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+              </svg>
             </div>
-          </>
+          </button>
+
+          {token && (
+            <Menu>
+              <MenuHandler>
+                <div className="cursor-pointer hover:scale-105 transition-all">
+                  <Avatar
+                    src="https://randomuser.me/api/portraits/women/42.jpg"
+                    alt="avatar"
+                    size="sm"
+                    className="ring-2 ring-blue-500"
+                  />
+                </div>
+              </MenuHandler>
+              <MenuList className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200 dark:border-gray-700">
+                <MenuItem className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                  <User className="h-4 w-4" />
+                  {user}
+                </MenuItem>
+                <MenuItem
+                  className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+        </div>
+
+        {!role ? (
+          <ul className="hidden lg:flex lg:items-center lg:w-auto lg:space-x-8">
+            <li>
+              <Link
+                className={`text-sm font-medium transition-all flex items-center gap-2 ${!token ? "text-gray-400 cursor-not-allowed" : "hover:text-blue-500"}`}
+                href={token ? "/user" : "/auth/login"}
+              >
+                <Code className="h-4 w-4" />
+                <span>Practice</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                className={`text-sm font-medium transition-all flex items-center gap-2 ${!token ? "text-gray-400 cursor-not-allowed" : "hover:text-blue-500"}`}
+                href={token ? "/user/content" : "/auth/login"}
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span>Custom</span>
+              </Link>
+            </li>
+          </ul>
+        ) : (
+          ""
         )}
+        {role === "1" ? (
+          <ul className="hidden lg:flex lg:items-center lg:w-auto lg:space-x-8">
+            <li>
+              <Link
+                className={`text-sm font-medium transition-all flex items-center gap-2 ${!token ? "text-gray-400 cursor-not-allowed" : "hover:text-blue-500"}`}
+                href={token ? "/user" : "/auth/login"}
+              >
+                <Code className="h-4 w-4" />
+                <span>Practice</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                className={`text-sm font-medium transition-all flex items-center gap-2 ${!token ? "text-gray-400 cursor-not-allowed" : "hover:text-blue-500"}`}
+                href={token ? "/user/content" : "/auth/login"}
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span>Custom</span>
+              </Link>
+            </li>
+          </ul>
+        ) : (
+          ""
+        )}
+
+        <div className="hidden lg:flex items-center gap-4">
+          {!token ? (
+            <>
+              <Link
+                className="py-2 px-6 bg-white/10 backdrop-blur-md border border-gray-300 dark:border-gray-700 hover:bg-white/20 text-sm font-bold rounded-xl transition-all"
+                href="auth/login"
+              >
+                Sign In
+              </Link>
+              <Link
+                className="py-2 px-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all"
+                href="auth/register"
+              >
+                Sign up
+              </Link>
+            </>
+          ) : (
+            <>
+              <div className="flex items-center gap-4">
+                <Menu>
+                  <MenuHandler>
+                    <div className="cursor-pointer hover:scale-105 transition-all">
+                      <Avatar
+                        src="https://randomuser.me/api/portraits/women/42.jpg"
+                        alt="avatar"
+                        size="sm"
+                        className="ring-2 ring-blue-500"
+                      />
+                    </div>
+                  </MenuHandler>
+                  <MenuList className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200 dark:border-gray-700">
+                    <MenuItem className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                      <User className="h-4 w-4" />
+                      {user}
+                    </MenuItem>
+                    <MenuItem
+                      className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Logout
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </div>
+            </>
+          )}
+        </div>
       </nav>
+
       {isOpen && (
         <div className="navbar-menu relative z-50">
-          <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
-          <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={toggleMenu}></div>
+          <nav className="fixed top-0 right-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg border-l border-gray-200 dark:border-gray-800 overflow-y-auto transition-all transform duration-300">
             <div className="flex items-center mb-8">
               <Link className="flex mr-auto text-3xl font-bold leading-none" href="/">
-                Interview
-                <div className="bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-text text-transparent">
-                  .AI
-                </div>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
+                  Interview.AI
+                </span>
               </Link>
-              <button className="navbar-close" onClick={toggleMenu}>
+              <button className="p-2" onClick={toggleMenu}>
                 <svg
-                  className="h-6 w-6 text-gray-700 cursor-pointer h9ver:text-gray-500"
+                  className="h-6 w-6 text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-500 dark:hover:text-blue-400"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -184,78 +231,60 @@ const Navbar = () => {
                 </svg>
               </button>
             </div>
+
+            <div className="mb-6">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="w-full py-3 pl-10 pr-4 text-sm bg-gray-100 dark:bg-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+              </div>
+            </div>
+
             <div>
               <ul>
                 <li className="mb-1">
-                  <a
-                    className="block p-4 text-sm font-bold text-gray-700 hover:bg-blue-509hover:text-blue-600 rounded"
-                    href="/"
+                  <Link
+                    className={`flex items-center gap-3 p-4 text-sm font-medium rounded-xl transition-all ${!token ? "text-gray-400 cursor-not-allowed" : "text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600"}`}
+                    href={token ? "/user" : "/auth/login"}
                   >
-                    Home
-                  </a>
+                    <Code className="h-5 w-5" />
+                    <span>Practice</span>
+                  </Link>
                 </li>
                 <li className="mb-1">
-                  <a
-                    className="block p-4 text-sm font-bold text-gray-700 hover:bg-blue-509hover:text-blue-600 rounded"
-                    href="/"
+                  <Link
+                    className={`flex items-center gap-3 p-4 text-sm font-medium rounded-xl transition-all ${!token ? "text-gray-400 cursor-not-allowed" : "text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600"}`}
+                    href={token ? "/user/content" : "/auth/login"}
                   >
-                    About Us
-                  </a>
-                </li>
-                <li className="mb-1">
-                  <a
-                    className="block p-4 text-sm font-bold text-gray-700 hover:bg-blue-509hover:text-blue-600 rounded"
-                    href="/"
-                  >
-                    Services
-                  </a>
-                </li>
-                <li className="mb-1">
-                  <a
-                    className="block p-4 text-sm font-bold text-gray-700 hover:bg-blue-509hover:text-blue-600 rounded"
-                    href="/"
-                  >
-                    Pricing
-                  </a>
-                </li>
-                <li className="mb-1">
-                  <a
-                    className="block p-4 text-sm font-bold text-gray-700 hover:bg-blue-509hover:text-blue-600 rounded"
-                    href="/"
-                  >
-                    Contact
-                  </a>
+                    <MessageSquare className="h-5 w-5" />
+                    <span>Custom</span>
+                  </Link>
                 </li>
               </ul>
             </div>
+
             <div className="mt-auto">
               {!token ? (
-                <div className="pt-6">
-                  <a
-                    className="block px-4 py-3 mb-3 leading-loose text-xs text-center font-bold bg-gray-50 hover:bg-gray-100 rounded-xl"
+                <div className="pt-6 space-y-3">
+                  <Link
+                    className="block py-3 px-4 text-center font-bold bg-white/50 dark:bg-gray-800/50 backdrop-blur-md border border-gray-200 dark:border-gray-700 hover:bg-white/70 dark:hover:bg-gray-800/70 rounded-xl transition-all"
                     href="auth/login"
                   >
                     Sign in
-                  </a>
-                  <a
-                    className="block px-4 py-3 mb-2 leading-loose text-xs text-center bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding 
-                      text-transparent font-bold bg-opacity-50 text-white rounded-xl 
-                      hover:from-blue-700 hover:to-purple-600"
+                  </Link>
+                  <Link
+                    className="block py-3 px-4 text-center bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all"
                     href="auth/register"
                   >
                     Sign up
-                  </a>
+                  </Link>
                 </div>
               ) : (
-                <div className="pt-6">
-                  <a
-                    className="block px-4 py-3 mb-3 leading-loose text-xs text-center bg-gradient-to-r from-blue-500 to-purple-400 bg-clip-padding 
-                      text-transparent font-bold bg-opacity-50 text-white rounded-xl 
-                      hover:from-blue-700 hover:to-purple-600"
-                    href="/user"
-                  >
-                    My Dashboard
-                  </a>
+                <div className="pt-6 space-y-3">
+                  {/* Dashboard button removed as it was commented out */}
                 </div>
               )}
             </div>

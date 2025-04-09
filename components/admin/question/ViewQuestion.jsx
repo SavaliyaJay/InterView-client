@@ -73,23 +73,3 @@ const ViewQuestion = () => {
 };
 
 export default ViewQuestion;
-
-// import { fetchQuestionListThunkAction } from '@/redux/content/action';
-// import { selectContentList } from '@/redux/content/selectors';
-// import React, { useEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux';
-
-// const ViewQuestion = () => {
-//     const dispatch = useDispatch();
-//   const { questionList } = useSelector(selectContentList);
-//   console.log(questionList);
-
-//   useEffect(() => {
-//     dispatch(fetchQuestionListThunkAction());
-//   }, [dispatch]);
-//   return (
-//     <div>ViewQuestion</div>
-//   )
-// }
-
-// export default ViewQuestion
