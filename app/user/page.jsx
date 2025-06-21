@@ -75,7 +75,7 @@ const SidebarPage = () => {
 
         {/* Main content area */}
         <div className="flex flex-col flex-grow lg:ml-[300px] p-6 relative z-10 w-full">
-          <Toaster position="top-right" />
+          {/* <Toaster position="top-right" /> */}
 
           {!subCategoryData ? (
             <div

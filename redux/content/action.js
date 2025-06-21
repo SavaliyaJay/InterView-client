@@ -166,17 +166,17 @@ export const postAnswerThunkAction = (answer, onSuccess = () => {}) => {
     try {
       const promise = await postAnswerApi(answer);
 
-      if (promise.data.status === "error") {
-        toast.error(promise.data.message);
-        return;
-      }
+      // if (promise.data.status === "error") {
+      //   toast.error(promise.data.message);
+      //   return;
+      // }
 
-      toast.success(promise.data.message);
+      // toast.success(promise.data.message);
 
       onSuccess();
     } catch (error) {
       console.log(error?.response?.data?.message || error?.message);
-      toast.error(error?.response?.data?.message || error?.message);
+      // toast.error(error?.response?.data?.message || error?.message);
     }
   };
 };
@@ -203,17 +203,17 @@ export const putAnswerOfQuestionThunkAction = (data, onSuccess = () => {}) => {
     try {
       const promise = await putAnswerOfQuestionApi(data);
 
-      if (promise.data.status === "error") {
-        toast.error(promise.data.message);
-        return;
-      }
+      // if (promise.data.status === "error") {
+      //   toast.error(promise.data.message);
+      //   return;
+      // }
 
-      toast.success(promise.data.message);
+      // toast.success(promise.data.message);
 
       onSuccess();
     } catch (error) {
       console.log(error?.response?.data?.message || error?.message);
-      toast.error(error?.response?.data?.message || error?.message);
+      // toast.error(error?.response?.data?.message || error?.message);
     }
   };
 };
